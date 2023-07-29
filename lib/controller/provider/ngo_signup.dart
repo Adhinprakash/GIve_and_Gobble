@@ -57,16 +57,14 @@ class NgoProvider extends ChangeNotifier {
       final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
       log(response.body);
+  String errorMessage = data["message"] ?? "Unknown error occurred";
       if (response.statusCode == 200) {
 
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => ScreenGetOtp()),
-        // );
 
         notifyListeners();
         return true;
       }else{
+        
         notifyListeners();
         return false;
 
@@ -104,8 +102,8 @@ class NgoProvider extends ChangeNotifier {
 
       if (response.statusCode == 201) {
        
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isNgoRegistered', true);
+  // SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     prefs.setBool('isNgoRegistered', true);
 
 
 notifyListeners();

@@ -1,4 +1,6 @@
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:http/http.dart'as http;
@@ -19,39 +21,44 @@ class NgoLogin extends ChangeNotifier {
 
 
 
-  Future<bool> ngologin(context) async {
+  Future<int> ngologin(context) async {
     final String emailorResname = emailOResnamecontroller.text;
     final String password = passwordcontroller.text;
     try {
             _setIsLoading(true); // Show the loader
 
       final response = await http.post(
-        Uri.parse(Api.restaurantlogin),
+        Uri.parse(Api.ngologin),
         body: {'identifier': emailorResname, 'password': password},
       );
       _setIsLoading(false); // Show the loader
-
-
-      if (response.statusCode == 201) {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        prefs.setBool('isNgoLoggedIn', true);
+// print(response.body);
+      if (response.statusCode ==  401) {
+       
+       
+      
 
         emailOResnamecontroller.clear();
         passwordcontroller.clear();
 
   notifyListeners();
-        return true;
+        return 401;
+      } else if(response.statusCode ==  403){
+        notifyListeners();
+        return 403;
+        // Handle other status codes (e.g., 500 for server error, etc.).
+    
       } else {
         notifyListeners();
-        return false;
+        return 201;
         // Handle other status codes (e.g., 500 for server error, etc.).
     
       }
     } catch (error) {
       // Handle error while making the HTTP request
-    
+    print(error);
       notifyListeners();
-      return false;
+      return 500;
     }
   
   }
