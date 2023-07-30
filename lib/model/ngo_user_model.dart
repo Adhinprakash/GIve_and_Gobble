@@ -1,0 +1,3 @@
+// class NgoUserModel{
+//    bool isLogined
+// }
