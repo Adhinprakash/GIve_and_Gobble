@@ -5,7 +5,7 @@ import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class NgoLogin extends ChangeNotifier {
+class ResLogin extends ChangeNotifier {
   final emailOResnamecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
 
@@ -18,53 +18,55 @@ class NgoLogin extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<int> ngologin(context) async {
+  Future<bool> restaurantlogin(context) async {
     final String emailorResname = emailOResnamecontroller.text;
     final String password = passwordcontroller.text;
     try {
       _setIsLoading(true); // Show the loader
 
       final response = await http.post(
-        Uri.parse(Api.ngologin),
+        Uri.parse(Api.restaurantlogin),
         body: {'identifier': emailorResname, 'password': password},
       );
       _setIsLoading(false); // Show the loader
-// print(response.body);
-      if (response.statusCode == 401) {
+
+      if (response.statusCode == 201) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isResLoggedIn', true);
+
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setString(
+            'resRefresh', jsonDecode(response.body)['refreshToken']);
+
+        sharedPreferences.setString(
+            'resAccess', jsonDecode(response.body)['accessToken']);
+
         emailOResnamecontroller.clear();
         passwordcontroller.clear();
 
         notifyListeners();
-        return 401;
-      } else if (response.statusCode == 403) {
-        notifyListeners();
-        return 403;
+        return true;
       } else {
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString(
-            'ngoRefresh', jsonDecode(response.body)['refreshToken']);
-
-        sharedPreferences.setString(
-            'ngoAccess', jsonDecode(response.body)['accessToken']);
-   String ngoaccess= sharedPreferences.getString('ngoAccess')!;
-   print(ngoaccess);
         notifyListeners();
-        return 201;
+        return false;
+        // Handle other status codes (e.g., 500 for server error, etc.).
       }
     } catch (error) {
-      print(error);
+      // Handle error while making the HTTP request
+
       notifyListeners();
-      return 500;
+      return false;
     }
   }
 
-  Future<bool> ngologout(BuildContext context) async {
+  Future<bool> restaurantlogout(BuildContext context) async {
+    // Clear user login state and user information from shared preferences.
     try {
       _setIsLoading(true);
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.remove('isNgoRegistered');
-      prefs.remove('isNgoLoggedIn');
+      prefs.remove('isResLoggedIn');
+      prefs.remove('isResRegistered');
       prefs.remove('userId');
       prefs.remove('userRole');
       prefs.remove('accessToken');

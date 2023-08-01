@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
-import 'package:http/http.dart' as http;
 
-class NgoProvider extends ChangeNotifier {
-  final ngonamecontroller = TextEditingController();
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+class UserProvider extends ChangeNotifier {
+  final namecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
   final locationcontroller = TextEditingController();
-  final ngotypecontroller = TextEditingController();
-  final pincodecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
+  final confirmpassword = TextEditingController();
   final otpcontroller = TextEditingController();
   String uId = "";
   String errormsg = '';
   String otperror = '';
   String emaildetail = '';
+  bool isBack = false;
 
   bool _isLoading = false;
 
@@ -36,28 +37,24 @@ class NgoProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> ngoregister() async {
-    final String username = ngonamecontroller.text;
+  Future<bool> register(context) async {
+    final String username = namecontroller.text;
     final String email = emailcontroller.text;
-    final String address = locationcontroller.text;
+    final String location = locationcontroller.text;
     final String password = passwordcontroller.text;
-    final String ngotype = ngotypecontroller.text;
-    final String pincode = pincodecontroller.text;
+
     try {
       _setIsLoading(true);
-      final response = await http.post(Uri.parse(Api.ngosignUpstepone), body: {
+      final response = await http.post(Uri.parse(Api.signupstepone), body: {
         "email": email,
         "username": username,
         "password": password,
-        "address": address,
-        "ngoType": ngotype,
-        "pincode": pincode
+        "location": location,
       });
       _setIsLoading(false);
-      final Map<String, dynamic> data  = json.decode(response.body);
+      final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
       log(response.body);
-      // String errorMessage = data["message"] ?? "Unknown error occurred";
       if (response.statusCode == 200) {
         notifyListeners();
         return true;
@@ -71,52 +68,49 @@ class NgoProvider extends ChangeNotifier {
     }
   }
 
-  Future<int> ngoregistertwo(context) async {
-    final String username = ngotypecontroller.text;
+  Future<bool> registertwo(context) async {
+    final String username = namecontroller.text;
     final String email = emailcontroller.text;
-    final String address = locationcontroller.text;
+    final String location = locationcontroller.text;
     final String password = passwordcontroller.text;
-    final String ngotype = ngotypecontroller.text;
-    final String pincode = pincodecontroller.text;
     final String otp = otpcontroller.text;
     try {
+      _otpLoading(true);
       print(uId);
       print(otpcontroller);
       final response =
-          await http.post(Uri.parse(Api.ngosignUpsteptwo + uId), body: {
+          await http.post(Uri.parse(Api.signupsteptwo + uId), body: {
         "email": email,
         "username": username,
         "password": password,
-        "address": address,
-        "ngoType": ngotype,
-        "pincode": pincode,
+        "location": location,
         "enteredOtp": otp
       });
+      _otpLoading(false);
       log(response.statusCode.toString());
       log(response.body);
 
-      if (response.statusCode == 400) {
-      
+      if (response.statusCode == 201) {
+        SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        sharedPreferences.setString(
+            'userRefresh', jsonDecode(response.body)['refreshToken']);
 
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        //     prefs.setBool('isNgoRegistered', true);
+        sharedPreferences.setString(
+            'userAccess', jsonDecode(response.body)['accessToken']);
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isRegistered', true);
 
         notifyListeners();
-        return 400;
+        return true;
       } else {
         notifyListeners();
-        //   SharedPreferences sharedPreferences =
-        //     await SharedPreferences.getInstance();
-        // sharedPreferences.setString(
-        //     'ngoRefresh', jsonDecode(response.body)['refreshToken']);
-
-        // sharedPreferences.setString(
-        //     'ngoAccess', jsonDecode(response.body)['accessToken']);
-        return 201;
+        return false;
       }
     } catch (e) {
       notifyListeners();
-      return 500;
+      return false;
     }
   }
 }
