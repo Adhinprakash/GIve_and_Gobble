@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
@@ -8,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NgoLogin extends ChangeNotifier {
   final emailOResnamecontroller = TextEditingController();
   final passwordcontroller = TextEditingController();
+  List ngodetails = [];
 
   bool _isLoading = false;
 
@@ -28,6 +30,10 @@ class NgoLogin extends ChangeNotifier {
         Uri.parse(Api.ngologin),
         body: {'identifier': emailorResname, 'password': password},
       );
+
+      log(response.statusCode.toString());
+      log(response.body);
+
       _setIsLoading(false); // Show the loader
 // print(response.body);
       if (response.statusCode == 401) {
@@ -42,13 +48,17 @@ class NgoLogin extends ChangeNotifier {
       } else {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isNgoLoggedIn', true);
+
         sharedPreferences.setString(
             'ngoRefresh', jsonDecode(response.body)['refreshToken']);
 
         sharedPreferences.setString(
             'ngoAccess', jsonDecode(response.body)['accessToken']);
-   String ngoaccess= sharedPreferences.getString('ngoAccess')!;
-   print(ngoaccess);
+        String ngoaccess = sharedPreferences.getString('ngoAccess')!;
+        print(ngoaccess);
         notifyListeners();
         return 201;
       }
@@ -78,5 +88,28 @@ class NgoLogin extends ChangeNotifier {
     }
     // Navigate to the login page after logout.
     // ignore: use_build_context_synchronously
+  }
+
+  Future<void> getNgoDetailsFromSharedPreferences() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String username = pref.getString('ngoname') ?? '';
+      String email = pref.getString('email') ?? '';
+      String location = pref.getString('location') ?? '';
+      String role = pref.getString('role') ?? '';
+      String image = pref.getString('profile') ?? '';
+      String ngotype = pref.getString('ngotype') ?? '';
+      ngodetails = [
+        {'key': 'ngoname', 'value': username},
+        {'key': 'email', 'value': email},
+        {'key': 'location', 'value': location},
+        {'key': 'role', 'value': role},
+        {'key': 'profile', 'value': image},
+        {'key': 'ngotype', 'value': ngotype},
+      ];
+      notifyListeners();
+    } catch (e) {
+      print("Error retrieving user details from SharedPreferences: $e");
+    }
   }
 }

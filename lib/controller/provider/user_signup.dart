@@ -18,9 +18,8 @@ class UserProvider extends ChangeNotifier {
   String otperror = '';
   String emaildetail = '';
   bool isBack = false;
-
   bool _isLoading = false;
-
+  List userdetils = [];
   bool get isLoading => _isLoading;
 
   void _setIsLoading(bool value) {
@@ -86,6 +85,8 @@ class UserProvider extends ChangeNotifier {
         "location": location,
         "enteredOtp": otp
       });
+      final Map<String, dynamic> data = json.decode(response.body);
+
       _otpLoading(false);
       log(response.statusCode.toString());
       log(response.body);
@@ -93,6 +94,13 @@ class UserProvider extends ChangeNotifier {
       if (response.statusCode == 201) {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
+
+        sharedPreferences.setString('username', data['user']['username']);
+        sharedPreferences.setString('email', data['user']['email']);
+        sharedPreferences.setString('location', data['user']['location']);
+        sharedPreferences.setString('role', data['user']['role']);
+        sharedPreferences.setString('profile', data['user']['profile']);
+
         sharedPreferences.setString(
             'userRefresh', jsonDecode(response.body)['refreshToken']);
 
@@ -111,6 +119,29 @@ class UserProvider extends ChangeNotifier {
     } catch (e) {
       notifyListeners();
       return false;
+    }
+  }
+
+  Future<void> getUserDetailsFromSharedPreferences() async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      String username = sharedPreferences.getString('username') ?? '';
+      String email = sharedPreferences.getString('email') ?? '';
+      String location = sharedPreferences.getString('location') ?? '';
+      String role = sharedPreferences.getString('role') ?? '';
+      String image = sharedPreferences.getString('profile') ?? '';
+
+      userdetils = [
+        {'key': 'username', 'value': username},
+        {'key': 'email', 'value': email},
+        {'key': 'location', 'value': location},
+        {'key': 'role', 'value': role},
+        {'key': 'profile', 'value': image},
+      ];
+      notifyListeners();
+    } catch (e) {
+      print("Error retrieving user details from SharedPreferences: $e");
     }
   }
 }

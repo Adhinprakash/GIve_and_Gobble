@@ -17,7 +17,7 @@ class RestaurantProvider extends ChangeNotifier {
   String errormsg = '';
   String otperror = '';
   bool isBack = false;
-
+  List restaurantdetails = [];
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -75,7 +75,7 @@ class RestaurantProvider extends ChangeNotifier {
     final String email = emailcontroller.text;
     final String location = locationcontroller.text;
     final String password = passwordcontroller.text;
-
+    final String otp = otpcontroller.text;
     try {
       _otpLoading(true);
       print(uId);
@@ -88,21 +88,25 @@ class RestaurantProvider extends ChangeNotifier {
         "location": location,
         "enteredOtp": otp
       });
+      final Map<String, dynamic> data = json.decode(response.body);
+
       _otpLoading(false);
       log(response.statusCode.toString());
       log(response.body);
 
+      SharedPreferences pref = await SharedPreferences.getInstance();
       if (response.statusCode == 201) {
+        pref.setString('restaurant', data['restaurant']['username']);
+        pref.setString('email', data['restaurant']['email']);
+        pref.setString('location', data['restaurant']['location']);
+        pref.setString('role', data['restaurant']['role']);
+        pref.setString('resprofile', data['restaurant']['profile']);
+        pref.setString('resRefresh', jsonDecode(response.body)['refreshToken']);
+
+        pref.setString('resAccess', jsonDecode(response.body)['accessToken']);
+
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isResRegistered', true);
-
-        SharedPreferences sharedPreferences =
-            await SharedPreferences.getInstance();
-        sharedPreferences.setString(
-            'resRefresh', jsonDecode(response.body)['refreshToken']);
-
-        sharedPreferences.setString(
-            'resAccess', jsonDecode(response.body)['accessToken']);
 
         notifyListeners();
         return true;
@@ -112,6 +116,28 @@ class RestaurantProvider extends ChangeNotifier {
       }
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<void> getRestaurantDetailsFromSharedPreferences() async {
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String username = pref.getString('restaurant') ?? '';
+      String email = pref.getString('email') ?? '';
+      String location = pref.getString('location') ?? '';
+      String role = pref.getString('role') ?? '';
+      String image = pref.getString('resprofile') ?? '';
+
+      restaurantdetails = [
+        {'key': 'restaurant', 'value': username},
+        {'key': 'email', 'value': email},
+        {'key': 'location', 'value': location},
+        {'key': 'role', 'value': role},
+        {'key': 'resprofile', 'value': image},
+      ];
+      notifyListeners();
+    } catch (e) {
+      print("Error retrieving user details from SharedPreferences: $e");
     }
   }
 }

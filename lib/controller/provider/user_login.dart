@@ -59,7 +59,7 @@ class UserLogin extends ChangeNotifier {
         return 401;
       }
     } catch (error) {
-              _setIsLoading(false);
+      _setIsLoading(false);
 
       notifyListeners();
       return 500;

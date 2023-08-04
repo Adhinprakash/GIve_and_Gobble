@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NgoProvider extends ChangeNotifier {
   final ngonamecontroller = TextEditingController();
@@ -54,7 +55,7 @@ class NgoProvider extends ChangeNotifier {
         "pincode": pincode
       });
       _setIsLoading(false);
-      final Map<String, dynamic> data  = json.decode(response.body);
+      final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
       log(response.body);
       // String errorMessage = data["message"] ?? "Unknown error occurred";
@@ -80,8 +81,6 @@ class NgoProvider extends ChangeNotifier {
     final String pincode = pincodecontroller.text;
     final String otp = otpcontroller.text;
     try {
-      print(uId);
-      print(otpcontroller);
       final response =
           await http.post(Uri.parse(Api.ngosignUpsteptwo + uId), body: {
         "email": email,
@@ -92,26 +91,33 @@ class NgoProvider extends ChangeNotifier {
         "pincode": pincode,
         "enteredOtp": otp
       });
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+
+      sharedPreferences.setString('ngoname', data['user']['username']);
+      sharedPreferences.setString('email', data['user']['email']);
+      sharedPreferences.setString('location', data['user']['address']);
+
+      sharedPreferences.setString('role', data['user']['role']);
+      sharedPreferences.setString('profile', data['user']['profile']);
+      sharedPreferences.setString('ngotype', data['user']['ngoType']);
+      sharedPreferences.setString(
+          'ngoRefresh', jsonDecode(response.body)['refreshToken']);
+
+      sharedPreferences.setString(
+          'ngoAccess', jsonDecode(response.body)['accessToken']);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isNgoRegistered', true);
       log(response.statusCode.toString());
       log(response.body);
 
       if (response.statusCode == 400) {
-      
-
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        //     prefs.setBool('isNgoRegistered', true);
-
         notifyListeners();
         return 400;
       } else {
         notifyListeners();
-        //   SharedPreferences sharedPreferences =
-        //     await SharedPreferences.getInstance();
-        // sharedPreferences.setString(
-        //     'ngoRefresh', jsonDecode(response.body)['refreshToken']);
-
-        // sharedPreferences.setString(
-        //     'ngoAccess', jsonDecode(response.body)['accessToken']);
         return 201;
       }
     } catch (e) {
