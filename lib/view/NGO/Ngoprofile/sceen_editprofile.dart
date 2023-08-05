@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_gobble/controller/consts/const.dart';
@@ -53,7 +52,7 @@ class _ScreenEditNgoProfileState extends State<ScreenEditNgoProfile> {
                         ),
                       ),
                     ),
-                       Padding(
+                    Padding(
                       padding: const EdgeInsets.only(
                         top: 10.0,
                         left: 30.0,
@@ -68,7 +67,7 @@ class _ScreenEditNgoProfileState extends State<ScreenEditNgoProfile> {
                           labelText: 'Email',
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
                       ),
@@ -115,7 +114,7 @@ class _ScreenEditNgoProfileState extends State<ScreenEditNgoProfile> {
                           labelText: 'Address',
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
                       ),
