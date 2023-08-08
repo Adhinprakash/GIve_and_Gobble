@@ -1,12 +1,14 @@
+
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
-import 'package:give_gobble/controller/provider/forgot_password.dart';
-import 'package:give_gobble/view/login/forgotpassword/screen_otp_field.dart';
+import 'package:give_gobble/controller/provider/ngo_forgot_password.dart';
+import 'package:give_gobble/view/NGO/ngo_forgotpassword/screen_ngo_otpfield.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class ScreenforgotPassword extends StatelessWidget {
-  const ScreenforgotPassword({super.key});
+class ScreenNgoforgotPassword extends StatelessWidget {
+  const ScreenNgoforgotPassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +39,7 @@ class ScreenforgotPassword extends StatelessWidget {
                       height: 8.h,
                       width: 80.w,
                       child: TextFormField(
-                        controller:Provider.of<Forgotpassword>(context,listen: false).emailcontroller,
+                        controller:Provider.of<NgoForgotpassword>(context,listen: false).emailcontroller,
           
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -71,14 +73,25 @@ class ScreenforgotPassword extends StatelessWidget {
                       onPressed: () async{
                         if(_formKey.currentState!.validate()){
 
-                        int isverify  = await Provider.of<Forgotpassword>(context,listen: false).enterOtp();
+                        int isverify  = await Provider.of<NgoForgotpassword>(context,listen: false).enterOtp();
 
                           if(isverify==200){
+                                     // ignore: use_build_context_synchronously
+                                     AwesomeDialog(
+                          context: context,
+                          dialogType: DialogType.SUCCES,
+                          animType: AnimType.TOPSLIDE,
+                          showCloseIcon: true,
+                          title: "Awesome!",
+                          desc: "Registration successfull",
+                        ).show();
+
+                        await Future.delayed(const Duration(seconds: 4));
                                         // ignore: use_build_context_synchronously
                                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const ScreenOtp()),
+                              builder: (context) => const ScreenNgoOtp ()),
                         );
                           }else if(isverify==401){
 
