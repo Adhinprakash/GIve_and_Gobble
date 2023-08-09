@@ -11,14 +11,14 @@ class ScreenNgoOtp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-       final _formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
 
     return SafeArea(
       child: Scaffold(
         body: Padding(
           padding: const EdgeInsets.all(20),
           child: Form(
-            key:_formKey ,
+            key: _formKey,
             child: ListView(
               children: [
                 Column(
@@ -29,8 +29,8 @@ class ScreenNgoOtp extends StatelessWidget {
                       style: textStyleFuc(
                           weight: FontWeight.bold, color: kBlack, size: 25),
                     ),
-                     Lottie.asset("assets/animation/animation_lkzkqim8.json",height: 200,width: 200),
-
+                    Lottie.asset("assets/animation/animation_lkzkqim8.json",
+                        height: 200, width: 200),
                     Padding(
                       padding: const EdgeInsets.only(top: 40),
                       child: Text(
@@ -40,10 +40,12 @@ class ScreenNgoOtp extends StatelessWidget {
                       ),
                     ),
                     kheight30,
-                     SizedBox(
+                    SizedBox(
                       width: 400,
                       child: Pinput(
-                        controller: Provider.of<NgoForgotpassword>(context,listen: false).otpcontroller,
+                        controller: Provider.of<NgoForgotpassword>(context,
+                                listen: false)
+                            .otpcontroller,
                         length: 6,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       ),
@@ -53,52 +55,49 @@ class ScreenNgoOtp extends StatelessWidget {
                     const Text("Resend code in 10 second"),
                     kheight30,
                     kheight30,
-          
-          
                     Container(
-                          decoration:
-                              BoxDecoration(borderRadius: BorderRadius.circular(2)),
-                          width: 350,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () async{
-                              if(_formKey.currentState!.validate()){
-                        
-                             int getotp=await Provider.of<NgoForgotpassword>(context,listen: false).confirmOtp();
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(2)),
+                        width: 350,
+                        height: 50,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              int getotp = await Provider.of<NgoForgotpassword>(
+                                      context,
+                                      listen: false)
+                                  .confirmOtp();
 
-                             if(getotp==200){
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const ScreenNgoResetpassword() ),
-                            );
-                             }else if(getotp==400){
-                                    // ignore: use_build_context_synchronously
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) => AlertDialog(
-                                          title: const Text('Oops!'),
-                                          content: const Text(
-                                              'Given otp is invalid'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context),
-                                              child: const Text('OK'),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                             }
-                              
+                              if (getotp == 200) {
+                                // ignore: use_build_context_synchronously
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ScreenNgoResetpassword()),
+                                );
+                              } else if (getotp == 400) {
+                                // ignore: use_build_context_synchronously
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Oops!'),
+                                    content: const Text('Given otp is invalid'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
                               }
-                           
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: kpink, foregroundColor: kwhite),
-                            child: const Text("Send OTP"),
-                          )),
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: kpink, foregroundColor: kwhite),
+                          child: const Text("Send OTP"),
+                        )),
                     Text(
                       "Didn't recevied code?",
                       style: textStyleFuc(

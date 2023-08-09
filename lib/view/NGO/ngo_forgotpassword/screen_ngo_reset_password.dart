@@ -2,12 +2,13 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
 import 'package:give_gobble/controller/provider/ngo_forgot_password.dart';
-import 'package:give_gobble/view/NGO/ngo_forgotpassword/screen_ngo_otpfield.dart';
+import 'package:give_gobble/view/login/screen_ngo_login.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 
-class ScreenNgoforgotPassword extends StatelessWidget {
-  const ScreenNgoforgotPassword({super.key});
+class ScreenNgoResetpassword extends StatelessWidget {
+  const ScreenNgoResetpassword({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,21 +17,28 @@ class ScreenNgoforgotPassword extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(left: 45, top: 120),
+          padding: const EdgeInsets.only(
+            left: 15,
+            top: 40,
+          ),
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "Forgot Password?",
+                  "Create new Password",
                   style: textStyleFuc(
-                      weight: FontWeight.bold, color: kBlack, size: 30),
+                      weight: FontWeight.bold, color: kBlack, size: 24),
                 ),
-                Text(
-                  "Enter the email address assosiated with your account",
-                  style: textStyleFuc(
-                      weight: FontWeight.w500, color: kBlack, size: 17),
+                Lottie.asset('assets/animation/animation_lkzmtbk4.json',
+                    height: 300, width: 300),
+                Center(
+                  child: Text(
+                    "Your New Password Must be different\n from previously used password ",
+                    style: textStyleFuc(
+                        weight: FontWeight.w500, color: kBlack, size: 17),
+                  ),
                 ),
                 kheight30,
                 kheight30,
@@ -52,7 +60,35 @@ class ScreenNgoforgotPassword extends StatelessWidget {
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      labelText: 'Username or Email',
+                      labelText: 'Enter your email',
+                      fillColor: Colors.amber,
+                      labelStyle: const TextStyle(color: Colors.black),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 8.h,
+                  width: 80.w,
+                  child: TextFormField(
+                    controller:
+                        Provider.of<NgoForgotpassword>(context, listen: false)
+                            .newpasswordcontroller,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your Email';
+                      }
+                      return null;
+                    },
+                    cursorColor: Colors.black,
+                    style: const TextStyle(),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      labelText: 'Enter new password',
                       fillColor: Colors.amber,
                       labelStyle: const TextStyle(color: Colors.black),
                       focusedBorder: OutlineInputBorder(
@@ -75,9 +111,9 @@ class ScreenNgoforgotPassword extends StatelessWidget {
                           int isverify = await Provider.of<NgoForgotpassword>(
                                   context,
                                   listen: false)
-                              .enterOtp();
+                              .savePassword();
 
-                          if (isverify == 200) {
+                          if (isverify == 201) {
                             // ignore: use_build_context_synchronously
                             AwesomeDialog(
                               context: context,
@@ -90,10 +126,12 @@ class ScreenNgoforgotPassword extends StatelessWidget {
 
                             await Future.delayed(const Duration(seconds: 4));
                             // ignore: use_build_context_synchronously
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const ScreenNgoOtp()),
+                                builder: (context) => ScreenNgoLogin(),
+                              ),
+                              (route) => false,
                             );
                           } else if (isverify == 401) {
                             // ignore: use_build_context_synchronously
@@ -130,7 +168,7 @@ class ScreenNgoforgotPassword extends StatelessWidget {
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kpink, foregroundColor: kwhite),
-                      child: const Text("Send OTP"),
+                      child: const Text("Save"),
                     ))
               ],
             ),
