@@ -30,6 +30,7 @@ class NgoLogin extends ChangeNotifier {
         Uri.parse(Api.ngologin),
         body: {'identifier': emailorResname, 'password': password},
       );
+      final Map<String, dynamic> data = json.decode(response.body);
 
       log(response.statusCode.toString());
       log(response.body);
@@ -51,7 +52,13 @@ class NgoLogin extends ChangeNotifier {
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isNgoLoggedIn', true);
+        sharedPreferences.setString('ngoname', data['user']['username']);
+        sharedPreferences.setString('email', data['user']['email']);
+        sharedPreferences.setString('location', data['user']['address']);
 
+        sharedPreferences.setString('role', data['user']['role']);
+        sharedPreferences.setString('profile', data['user']['profile']);
+        sharedPreferences.setString('ngotype', data['user']['ngoType']);
         sharedPreferences.setString(
             'ngoRefresh', jsonDecode(response.body)['refreshToken']);
 
@@ -79,6 +86,8 @@ class NgoLogin extends ChangeNotifier {
       prefs.remove('userRole');
       prefs.remove('accessToken');
       prefs.remove('refreshToken');
+      prefs.remove('role');
+      prefs.remove('profile');
       _setIsLoading(false);
       notifyListeners();
       return true;
