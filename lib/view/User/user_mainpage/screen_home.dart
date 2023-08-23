@@ -1,10 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
+import 'package:give_gobble/controller/provider/news_request/news_request.dart';
+import 'package:give_gobble/controller/provider/user_signup.dart';
+import 'package:give_gobble/view/User/user_mainpage/widgets/newslist_widget.dart';
 import 'package:give_gobble/view/User/widgets/card_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:sizer/sizer.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class ScreenHome extends StatelessWidget {
+class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
+
+  @override
+  State<ScreenHome> createState
+ 
+  () => _ScreenHomeState();
+}
+
+class _ScreenHomeState extends State<ScreenHome> {
+  @override
+  void initState() {
+    Provider.of<UserProvider>(context, listen: false)
+        .getUserDetailsFromSharedPreferences();
+    Provider.of<NewsApi>(context, listen: false).getnews();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +46,8 @@ class ScreenHome extends StatelessWidget {
                 kheight30,
                 Center(
                   child: Container(
-                      width: 380,
-                      height: 200,
+                      width: 86.w,
+                      height: 20.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: const Color.fromARGB(255, 122, 93, 170),
@@ -52,14 +74,18 @@ class ScreenHome extends StatelessWidget {
                                 ),
                                 kHeight15,
                                 ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      String url =
+                                          'https://www.akshayapatra.org';
+                                      await launchUrl(Uri.parse(url));
+                                    },
                                     child: const Text("Donation"))
                               ],
                             ),
                             Image.asset(
                               "assets/cardimage-removebg-preview.png",
-                              width: 150,
-                              height: 160,
+                              width: 35.w,
+                              height: 16.h,
                             )
                           ],
                         ),
@@ -75,21 +101,45 @@ class ScreenHome extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CardWidget(
-                      text: "Hello",
-                      image: "assets/food-removebg-preview.png",
+                    GestureDetector(
+                      onTap: () async {
+                        String url = 'https://www.feedingindia.org/';
+                        await launchUrl(Uri.parse(url));
+                      },
+                      child: const CardWidget(
+                        text: "Food",
+                        image: "assets/food-removebg-preview.png",
+                      ),
                     ),
-                    CardWidget(
-                      text: "Education",
-                      image: "assets/Graduation_hat-removebg-preview.png",
+                    GestureDetector(
+                      onTap: () async {
+                        String url = 'https://give.do/';
+                        await launchUrl(Uri.parse(url));
+                      },
+                      child: const CardWidget(
+                        text: "Education",
+                        image: "assets/Graduation_hat-removebg-preview.png",
+                      ),
                     ),
-                    CardWidget(
-                      text: "Water",
-                      image: "assets/waterbottle-removebg-preview (1).png",
+                    GestureDetector(
+                      onTap: () async {
+                        String url = 'https://www.waterforpeople.org/india/';
+                        await launchUrl(Uri.parse(url));
+                      },
+                      child: const CardWidget(
+                        text: "Water",
+                        image: "assets/waterbottle-removebg-preview (1).png",
+                      ),
                     ),
-                    CardWidget(
-                      text: "Clothes",
-                      image: "assets/clothes-removebg-preview.png",
+                    GestureDetector(
+                      onTap: () async {
+                        String url = 'https://sadsindia.org/';
+                        await launchUrl(Uri.parse(url));
+                      },
+                      child: const CardWidget(
+                        text: "Clothes",
+                        image: "assets/clothes-removebg-preview.png",
+                      ),
                     ),
                   ],
                 ),
@@ -100,63 +150,30 @@ class ScreenHome extends StatelessWidget {
                       weight: FontWeight.w600, color: kBlack, size: 20),
                 ),
                 kheight30,
-                Column(
-                  children: [
-                    Center(
-                      child: Container(
-                        width: 400,
-                        height: 400,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(2),
-                            color: Color.fromARGB(255, 255, 255, 255),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey.withOpacity(0.9),
-                                  spreadRadius: 3,
-                                  blurRadius: 10,
-                                  offset: const Offset(0, 4))
-                            ]),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Center(
-                                child: Image.asset(
-                              "assets/ncdonalds.jfif",
-                              width: 380,
-                              height: 250,
-                            )),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 30),
-                                  child: Container(
-                                    
-                                    child: Text("Amelia Lucas,Kate Roger",style: textStyleFuc(weight: FontWeight.w300, color: kwhite, size: 14),
-                                    
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 122, 93, 170),
-                                      borderRadius: radius4
-                                    ),
-                                    
-                                  ),
-                                  
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 30,right: 10),
-                                  child: Text("McDonald's closes corporate offices as workers await layoffs - CNBC",style: textStyleFuc(weight: FontWeight.w500, color: kBlack, size: 17),),
-                                ),
-                                kHeight15,
-                                Center(child: Text("read more",style: textStyleFuc(weight: FontWeight.normal, color: Colors.grey, size: 14),))
-                              ],
-                            )
-                          ],
+                Consumer<NewsApi>(
+                  builder: (context, newapinotifier, child) {
+                    final article = newapinotifier.articles;
+                    if (newapinotifier.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else {
+                      return SizedBox(
+                        height: 50.h,
+                        width: 100.w,
+                        child: ListView.builder(
+                          itemCount: 6,
+                          itemBuilder: (context, index) {
+                            return NewslistWidget(
+                              title: article[index].title,
+                              image: article[index].urlToImage,
+                              desc: article[index].description,
+                            );
+                          },
                         ),
-                      ),
-                    ),
-                  ],
-                )
+                      );
+                    }
+                  },
+                ),
+                kHeight15
               ],
             ),
           )
