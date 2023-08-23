@@ -41,27 +41,28 @@ class ResLogin extends ChangeNotifier {
 
         sharedPreferences.setString(
             'resAccess', jsonDecode(response.body)['accessToken']);
-
+    
+  
         emailOResnamecontroller.clear();
         passwordcontroller.clear();
 
         notifyListeners();
         return true;
       } else {
+        _setIsLoading(false); 
+
         notifyListeners();
         return false;
-        // Handle other status codes (e.g., 500 for server error, etc.).
       }
     } catch (error) {
-      // Handle error while making the HTTP request
-
+      _setIsLoading(false); 
       notifyListeners();
       return false;
     }
   }
 
   Future<bool> restaurantlogout(BuildContext context) async {
-    // Clear user login state and user information from shared preferences.
+   
     try {
       _setIsLoading(true);
       SharedPreferences prefs = await SharedPreferences.getInstance();
