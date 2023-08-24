@@ -44,8 +44,7 @@ class RestaurantProvider extends ChangeNotifier {
 
     try {
       _setIsLoading(true);
-      print(resaturantname);
-      print(email);
+  
 
       final response = await http.post(Uri.parse(Api.ressignUpstepone), body: {
         "email": email,
@@ -78,8 +77,6 @@ class RestaurantProvider extends ChangeNotifier {
     final String otp = otpcontroller.text;
     try {
       _otpLoading(true);
-      print(uId);
-      print(otpcontroller);
       final response =
           await http.post(Uri.parse(Api.ressignUpsteptwo + uId), body: {
         "email": email,
@@ -89,7 +86,6 @@ class RestaurantProvider extends ChangeNotifier {
         "enteredOtp": otp
       });
       final Map<String, dynamic> data = json.decode(response.body);
-
       _otpLoading(false);
       log(response.statusCode.toString());
       log(response.body);
@@ -104,7 +100,8 @@ class RestaurantProvider extends ChangeNotifier {
         pref.setString('resRefresh', jsonDecode(response.body)['refreshToken']);
 
         pref.setString('resAccess', jsonDecode(response.body)['accessToken']);
-
+                String resId = data['restaurant']['_id'];
+      pref.setString('resId', resId);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isResRegistered', true);
 
@@ -137,7 +134,7 @@ class RestaurantProvider extends ChangeNotifier {
       ];
       notifyListeners();
     } catch (e) {
-      print("Error retrieving user details from SharedPreferences: $e");
+      log("Error retrieving user details from SharedPreferences: $e");
     }
   }
 }

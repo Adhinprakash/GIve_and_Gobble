@@ -56,7 +56,7 @@ String getFormattedTimeWithAMPM(TimeOfDay timeOfDay) {
 
   Future<int> postFoodReqest(context) async {
 
-
+ 
     FoodRequestModel foodreqmodel = FoodRequestModel(
         title: titlecontroller.text,
         time: timeOfDay.format(context).toString(),
@@ -346,16 +346,16 @@ return false;
 }
 
 
-      Future<void> searchResu(String text) async {
-    if (text.isEmpty) {
-      result = allngos;
-    } else {
-      result = allngos
-          .where((element) =>
-              element['username'].toLowerCase().contains(text.toLowerCase()))
-          .toList();
-    }
-    notifyListeners();
-  }
+  //     Future<void> searchResu(String text) async {
+  //   if (text.isEmpty) {
+  //     result = allngos;
+  //   } else {
+  //     result = allngos
+  //         .where((element) =>
+  //             element['username'].toLowerCase().contains(text.toLowerCase()))
+  //         .toList();
+  //   }
+  //   notifyListeners();
+  // }
 
 }

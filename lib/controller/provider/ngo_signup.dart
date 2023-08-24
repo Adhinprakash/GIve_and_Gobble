@@ -4,7 +4,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NgoProvider extends ChangeNotifier {
   final ngonamecontroller = TextEditingController();
@@ -18,7 +17,7 @@ class NgoProvider extends ChangeNotifier {
   String errormsg = '';
   String otperror = '';
   String emaildetail = '';
-
+// List ngoDetails=[];
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -45,7 +44,6 @@ class NgoProvider extends ChangeNotifier {
     final String ngotype = ngotypecontroller.text;
     final String pincode = pincodecontroller.text;
     try {
-      _setIsLoading(true);
       final response = await http.post(Uri.parse(Api.ngosignUpstepone), body: {
         "email": email,
         "username": username,
@@ -54,7 +52,6 @@ class NgoProvider extends ChangeNotifier {
         "ngoType": ngotype,
         "pincode": pincode
       });
-      _setIsLoading(false);
       final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
       log(response.body);
@@ -72,7 +69,7 @@ class NgoProvider extends ChangeNotifier {
     }
   }
 
-  Future<int> ngoregistertwo(context) async {
+  Future<int> ngoregistertwo() async {
     final String username = ngotypecontroller.text;
     final String email = emailcontroller.text;
     final String address = locationcontroller.text;
@@ -82,7 +79,7 @@ class NgoProvider extends ChangeNotifier {
     final String otp = otpcontroller.text;
     try {
       final response =
-          await http.post(Uri.parse(Api.ngosignUpsteptwo + uId), body: {
+          await http.post(Uri.parse(Api.ngosignUpsteptwo+uId), body: {
         "email": email,
         "username": username,
         "password": password,
@@ -91,38 +88,46 @@ class NgoProvider extends ChangeNotifier {
         "pincode": pincode,
         "enteredOtp": otp
       });
-      final Map<String, dynamic> data = json.decode(response.body);
 
-      SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-
-      sharedPreferences.setString('ngoname', data['user']['username']);
-      sharedPreferences.setString('email', data['user']['email']);
-      sharedPreferences.setString('location', data['user']['address']);
-
-      sharedPreferences.setString('role', data['user']['role']);
-      sharedPreferences.setString('profile', data['user']['profile']);
-      sharedPreferences.setString('ngotype', data['user']['ngoType']);
-      sharedPreferences.setString(
-          'ngoRefresh', jsonDecode(response.body)['refreshToken']);
-
-      sharedPreferences.setString(
-          'ngoAccess', jsonDecode(response.body)['accessToken']);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setBool('isNgoRegistered', true);
       log(response.statusCode.toString());
       log(response.body);
 
-      if (response.statusCode == 400) {
-        notifyListeners();
-        return 400;
-      } else {
+      if (response.statusCode == 201) {
         notifyListeners();
         return 201;
+      } else {
+        notifyListeners();
+        return 400;
       }
     } catch (e) {
       notifyListeners();
       return 500;
     }
   }
+
+  //   Future<void> getNgoDetailsFromSharedPreferences() async {
+  //   try {
+  //     SharedPreferences sharedPreferences =
+  //         await SharedPreferences.getInstance();
+  //     String username = sharedPreferences.getString('ngoname') ?? '';
+  //     String email = sharedPreferences.getString('email') ?? '';
+  //     String location = sharedPreferences.getString('location') ?? '';
+  //     String role = sharedPreferences.getString('role') ?? '';
+  //     String image = sharedPreferences.getString('profile') ?? '';
+  //           String ngoType = sharedPreferences.getString('ngotype') ?? '';
+
+  //     ngoDetails = [
+  //       {'key': 'username', 'value': username},
+  //       {'key': 'email', 'value': email},
+  //       {'key': 'location', 'value': location},
+  //       {'key': 'role', 'value': role},
+  //       {'key': 'profile', 'value': image},
+  //       {'key': 'ngoType', 'value':ngoType },
+
+  //     ];
+  //     notifyListeners();
+  //   } catch (e) {
+  //     print("Error retrieving user details from SharedPreferences: $e");
+  //   }
+  // }
 }

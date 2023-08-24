@@ -1,7 +1,7 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:form_field_validator/form_field_validator.dart';
-import 'package:give_gobble/view/Restaurant/restaurant_login/screen_res_login.dart';
+import 'package:give_gobble/controller/provider/restarant_signup.dart';
+import 'package:give_gobble/view/Restaurant/restaurant_registration/screen_res_otp_page.dart';
+import 'package:provider/provider.dart';
 
 import '../../../controller/consts/const.dart';
 
@@ -14,23 +14,17 @@ class ScreenResRegistration extends StatefulWidget {
 
 class _ScreenResRegistrationState extends State<ScreenResRegistration> {
   final _formkey = GlobalKey<FormState>();
-  final _namecontroller = TextEditingController();
-  final _emailcontroller = TextEditingController();
-  final _locationcontroller = TextEditingController();
-  final _passwordcontroller = TextEditingController();
-  final _confirmpassword = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           body: Padding(
-            padding: const EdgeInsets.all(20),
-            child: ListView(
-                  children: [
+        padding: const EdgeInsets.all(20),
+        child: ListView(
+          children: [
             Column(
               children: [
-                
                 Text(
                   "Register Restaurant",
                   style: textStyleFuc(
@@ -45,14 +39,21 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                         height: 70,
                         width: 370,
                         child: TextFormField(
-                          validator: RequiredValidator(errorText: "Required"),
-                          controller: _namecontroller,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'confirm restaurant name';
+                            }
+                            return null;
+                          },
+                          controller: Provider.of<RestaurantProvider>(context,
+                                  listen: false)
+                              .resnamecontroller,
                           cursorColor: Colors.black,
                           style: const TextStyle(),
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12)),
-                            labelText: 'Name',
+                            labelText: 'Restaurant Name',
                             labelStyle: const TextStyle(color: Colors.black),
                             focusedBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
@@ -66,12 +67,15 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                         width: 370,
                         child: TextFormField(
                           keyboardType: TextInputType.emailAddress,
-                          validator: MultiValidator([
-                            RequiredValidator(errorText: "Required"),
-                            EmailValidator(
-                                errorText: "Please enter a valid email address"),
-                          ]),
-                          controller: _emailcontroller,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'confirm email';
+                            }
+                            return null;
+                          },
+                          controller: Provider.of<RestaurantProvider>(context,
+                                  listen: false)
+                              .emailcontroller,
                           cursorColor: Colors.black,
                           style: const TextStyle(),
                           decoration: InputDecoration(
@@ -92,8 +96,15 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                         width: 370,
                         child: TextFormField(
                           validator:
-                              RequiredValidator(errorText: "Required Location"),
-                          controller: _locationcontroller,
+                             (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your location';
+                            }
+                            return null;
+                          },
+                          controller: Provider.of<RestaurantProvider>(context,
+                                  listen: false)
+                              .locationcontroller,
                           cursorColor: Colors.black,
                           style: const TextStyle(),
                           decoration: InputDecoration(
@@ -112,18 +123,16 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                         height: 70,
                         width: 370,
                         child: TextFormField(
-                        
                           keyboardType: TextInputType.visiblePassword,
-                          validator: MultiValidator([
-                            RequiredValidator(errorText: "Required"),
-                            MinLengthValidator(6,
-                                errorText:
-                                    "Password must contain atleast 6 characters"),
-                            MaxLengthValidator(15,
-                                errorText:
-                                    "Password cannot be more 15 characters"),
-                          ]),
-                          controller: _passwordcontroller,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'confirm password';
+                            }
+                            return null;
+                          },
+                          controller: Provider.of<RestaurantProvider>(context,
+                                  listen: false)
+                              .passwordcontroller,
                           cursorColor: Colors.black,
                           style: const TextStyle(),
                           decoration: InputDecoration(
@@ -138,29 +147,7 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                         ),
                       ),
                       kheight30,
-                      SizedBox(
-                        height: 70,
-                        width: 370,
-                        child: TextFormField(
-                          validator: MultiValidator([
-                            RequiredValidator(errorText: "Required Password")
-                          ]),
-                          keyboardType: TextInputType.visiblePassword,
-                          controller: _confirmpassword,
-                          cursorColor: Colors.black,
-                          style: const TextStyle(),
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            labelText: 'Confirm password',
-                            labelStyle: const TextStyle(color: Colors.black),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: BorderSide(color: kBlack),
-                            ),
-                          ),
-                        ),
-                      ),
+                 
                     ],
                   ),
                 ),
@@ -169,35 +156,60 @@ class _ScreenResRegistrationState extends State<ScreenResRegistration> {
                     width: 300,
                     child: ElevatedButton(
                       onPressed: () async {
-                        if (_formkey.currentState!.validate()) {
-                          AwesomeDialog(
-                            context: context,
-                            dialogType: DialogType.SUCCES,
-                            animType: AnimType.TOPSLIDE,
-                            showCloseIcon: true,
-                            title: "Awesome!",
-                            desc: "Registration successfull",
-                          ).show();
-          
-                          await Future.delayed(const Duration(seconds: 2));
-          
+                        if(_formkey.currentState!.validate()){
+                               bool isregister = await Provider.of<RestaurantProvider>(
+                                context,
+                                listen: false)
+                            .resregister(context);
+                        if (isregister) {
                           // ignore: use_build_context_synchronously
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const ScreenResLogin()),
+                                builder: (context) => const ScreenResOtp()),
+                          );
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                  'An error occurred. Please try again later.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
                           );
                         }
+                        }
+                   
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kpink, foregroundColor: kwhite),
-                      child: const Text("Registration"),
+                      child: Consumer<RestaurantProvider>(
+                        builder: (context, value, child) {
+                          return value.isLoading
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: kwhite,
+                                  ),
+                                )
+                              : const Text("Register");
+                        },
+                      ),
                     ))
               ],
             ),
-                  ],
-                ),
-          )),
+          ],
+        ),
+      )),
     );
   }
 }

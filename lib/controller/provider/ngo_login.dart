@@ -55,22 +55,21 @@ class NgoLogin extends ChangeNotifier {
         sharedPreferences.setString('ngoname', data['user']['username']);
         sharedPreferences.setString('email', data['user']['email']);
         sharedPreferences.setString('location', data['user']['address']);
+        sharedPreferences.setString('id', data['user']['_id']);
 
         sharedPreferences.setString('role', data['user']['role']);
         sharedPreferences.setString('profile', data['user']['profile']);
         sharedPreferences.setString('ngotype', data['user']['ngoType']);
         sharedPreferences.setString(
             'ngoRefresh', jsonDecode(response.body)['refreshToken']);
-
+        
         sharedPreferences.setString(
             'ngoAccess', jsonDecode(response.body)['accessToken']);
         String ngoaccess = sharedPreferences.getString('ngoAccess')!;
-        print(ngoaccess);
         notifyListeners();
         return 201;
       }
     } catch (error) {
-      print(error);
       notifyListeners();
       return 500;
     }
@@ -88,6 +87,7 @@ class NgoLogin extends ChangeNotifier {
       prefs.remove('refreshToken');
       prefs.remove('role');
       prefs.remove('profile');
+      
       _setIsLoading(false);
       notifyListeners();
       return true;
@@ -95,7 +95,7 @@ class NgoLogin extends ChangeNotifier {
       notifyListeners();
       return false;
     }
-    // Navigate to the login page after logout.
+   // Navigate to the login page after logout.
     // ignore: use_build_context_synchronously
   }
 
@@ -108,6 +108,8 @@ class NgoLogin extends ChangeNotifier {
       String role = pref.getString('role') ?? '';
       String image = pref.getString('profile') ?? '';
       String ngotype = pref.getString('ngotype') ?? '';
+      String id = pref.getString('id') ?? '';
+
       ngodetails = [
         {'key': 'ngoname', 'value': username},
         {'key': 'email', 'value': email},
@@ -115,10 +117,12 @@ class NgoLogin extends ChangeNotifier {
         {'key': 'role', 'value': role},
         {'key': 'profile', 'value': image},
         {'key': 'ngotype', 'value': ngotype},
+       {'key': '_id', 'value': id},
+
       ];
       notifyListeners();
     } catch (e) {
-      print("Error retrieving user details from SharedPreferences: $e");
+    return  log("Error retrieving user details from SharedPreferences: $e");
     }
   }
 }

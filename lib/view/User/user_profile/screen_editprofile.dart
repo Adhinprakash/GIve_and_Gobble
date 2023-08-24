@@ -44,7 +44,7 @@ class _ScreenEditprofileState extends State<ScreenEditprofile> {
                         cursorColor: Colors.black,
                         style: const TextStyle(),
                         decoration: const InputDecoration(
-                          labelText: 'Restuarant name',
+                          labelText: 'User name',
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                             borderSide: BorderSide(color: Colors.black),
@@ -94,7 +94,7 @@ class _ScreenEditprofileState extends State<ScreenEditprofile> {
                           labelText: 'Address',
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
                       ),

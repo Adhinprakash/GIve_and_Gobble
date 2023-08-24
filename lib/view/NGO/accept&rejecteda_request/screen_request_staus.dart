@@ -8,23 +8,21 @@ class ScreenRequestStaus extends StatelessWidget {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-      appBar: AppBar(
-           title: Text("Food Request"), 
-
+        appBar: AppBar(
+          title: const Text("Food Request"),
         ),
-      body: const Column(
-        children: [
-          TabBar(tabs: [
-          Tab(
-            text: "APPROVED ",
-
-          ),
-          Tab(
-            text: 'REJECTED',
-          )
-          ])
-        ],
-      ),
+        body: const Column(
+          children: [
+            TabBar(tabs: [
+              Tab(
+                text: "APPROVED ",
+              ),
+              Tab(
+                text: 'REJECTED',
+              )
+            ])
+          ],
+        ),
       ),
     );
   }

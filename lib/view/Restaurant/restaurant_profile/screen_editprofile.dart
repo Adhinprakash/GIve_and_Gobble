@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:give_gobble/controller/consts/const.dart';
@@ -8,10 +7,12 @@ class ScreenEditprofileRestaurant extends StatefulWidget {
   const ScreenEditprofileRestaurant({super.key});
 
   @override
-  State<ScreenEditprofileRestaurant> createState() => _ScreenEditprofileRestaurantState();
+  State<ScreenEditprofileRestaurant> createState() =>
+      _ScreenEditprofileRestaurantState();
 }
 
-class _ScreenEditprofileRestaurantState extends State<ScreenEditprofileRestaurant> {
+class _ScreenEditprofileRestaurantState
+    extends State<ScreenEditprofileRestaurant> {
   final _formkey = GlobalKey<FormState>();
   final _namecontroller = TextEditingController();
   final _phonecontroller = TextEditingController();
@@ -95,7 +96,7 @@ class _ScreenEditprofileRestaurantState extends State<ScreenEditprofileRestauran
                           labelText: 'Address',
                           labelStyle: TextStyle(color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
-                            borderSide:  BorderSide(color: Colors.black),
+                            borderSide: BorderSide(color: Colors.black),
                           ),
                         ),
                       ),

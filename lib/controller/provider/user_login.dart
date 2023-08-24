@@ -30,9 +30,9 @@ class UserLogin extends ChangeNotifier {
         Uri.parse(Api.loginApi),
         body: {'identifier': emailorusername, 'password': password},
       );
-
+       
       _setIsLoading(false); // Hide the loader
-
+   Map<String,dynamic>responseData=jsonDecode(response.body);
       if (response.statusCode == 201) {
         // Login successful
 
@@ -46,7 +46,8 @@ class UserLogin extends ChangeNotifier {
 
         sharedPreferences.setString(
             'userAccess', jsonDecode(response.body)['accessToken']);
-
+             String userId = responseData['user']['_id'];
+      sharedPreferences.setString('userId', userId);
         emailOrusernamecontroller.clear();
         passwordcontroller.clear();
 
@@ -54,7 +55,6 @@ class UserLogin extends ChangeNotifier {
         return 201;
       } else {
         _setIsLoading(false);
-        // Handle other status codes (e.g., 500 for server error, etc.).
         notifyListeners();
         return 401;
       }
@@ -67,7 +67,6 @@ class UserLogin extends ChangeNotifier {
   }
 
   Future<bool> logout(BuildContext context) async {
-    // Clear user login state and user information from shared preferences.
     try {
       _setIsLoading(true);
       SharedPreferences prefs = await SharedPreferences.getInstance();

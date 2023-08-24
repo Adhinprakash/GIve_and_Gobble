@@ -46,8 +46,8 @@ class RequestDetails extends StatelessWidget {
                     image: DecorationImage(
                         image: NetworkImage(image!), fit: BoxFit.fill)),
               ),
-              Container(
-                width: 800,
+              SizedBox(
+                width: 80.w,
                 height: 450,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -100,7 +100,7 @@ class RequestDetails extends StatelessWidget {
                                 color: kBlack,
                                 size: 15),
                           ),
-                          Text("food for ${people!} people"),
+                          Text("food for ${people!.toString()} people"),
                           kheight30,
                           Text(
                             " Address",

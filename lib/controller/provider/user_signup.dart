@@ -53,6 +53,7 @@ class UserProvider extends ChangeNotifier {
       _setIsLoading(false);
       final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
+      print(data);
       log(response.body);
       if (response.statusCode == 200) {
         notifyListeners();
@@ -90,11 +91,12 @@ class UserProvider extends ChangeNotifier {
       _otpLoading(false);
       log(response.statusCode.toString());
       log(response.body);
-
+    
       if (response.statusCode == 201) {
         SharedPreferences sharedPreferences =
             await SharedPreferences.getInstance();
-
+  String userId=data['user']['_id'];
+  sharedPreferences.setString("userId", userId);
         sharedPreferences.setString('username', data['user']['username']);
         sharedPreferences.setString('email', data['user']['email']);
         sharedPreferences.setString('location', data['user']['location']);
@@ -103,10 +105,8 @@ class UserProvider extends ChangeNotifier {
 
         sharedPreferences.setString(
             'userRefresh', jsonDecode(response.body)['refreshToken']);
-
         sharedPreferences.setString(
             'userAccess', jsonDecode(response.body)['accessToken']);
-
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isRegistered', true);
 

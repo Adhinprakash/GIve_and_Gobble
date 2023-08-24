@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:give_gobble/controller/consts/const.dart';
 import 'package:give_gobble/controller/provider/forgot_password.dart';
 import 'package:give_gobble/view/login/forgotpassword/screen_reset_password.dart';
@@ -28,7 +27,6 @@ int _secondsRemaining=120;
 
 @override
   void initState() {
-    // TODO: implement initState
     startTimer();
     super.initState();
   }
@@ -47,7 +45,6 @@ int _secondsRemaining=120;
   }
   @override
   void dispose() {
-    // TODO: implement dispose
     _timer.cancel();
     super.dispose();
   }
@@ -143,7 +140,9 @@ int _secondsRemaining=120;
                       "Didn't recevied code?",
                       style: textStyleFuc(
                           weight: FontWeight.w700, color: kpink, size: 14),
-                    )
+                    ),
+
+
                   ],
                 ),
               ],

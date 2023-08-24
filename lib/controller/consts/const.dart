@@ -1,10 +1,9 @@
-  
 import 'package:flutter/material.dart';
 
 var kwhite = Colors.white;
 var kBlack = Colors.black;
 var kBlack38 = Colors.black38;
-var kpink  = const Color.fromARGB(255, 244, 54, 216);
+var kpink = const Color.fromARGB(255, 244, 54, 216);
 var kpurple = const Color(0xFF6D45B1);
 var kGreen = const Color.fromARGB(255, 139, 180, 92);
 
@@ -35,8 +34,6 @@ var kheight30 = const SizedBox(
 var kHeightFive = const SizedBox(
   height: 5,
 );
-
-
 
 var kwidth15 = const SizedBox(
   width: 15,

@@ -61,86 +61,84 @@ class _ScreenNgoOtpState extends State<ScreenNgoOtp> {
                 ),
                 kheight30,
                 kHeight15,
-                ElevatedButton(
-                  onPressed: () async {
-                    int isgetotp =
-                        await Provider.of<NgoProvider>(context, listen: false)
-                            .ngoregistertwo();
+          ElevatedButton(
+  onPressed: () async {
+    int registrationResult = await Provider.of<NgoProvider>(context, listen: false).ngoregistertwo();
 
-                    if (isgetotp == 400) {
-                      // ignore: use_build_context_synchronously
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.ERROR,
-                        animType: AnimType.TOPSLIDE,
-                        showCloseIcon: true,
-                        title: "Error!",
-                        desc: " Otp verification failed",
-                      ).show();
+    if (registrationResult == 400) {
+      // Handle error with an AwesomeDialog
+      // ignore: use_build_context_synchronously
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.ERROR,
+        animType: AnimType.TOPSLIDE,
+        showCloseIcon: true,
+        title: "Error!",
+        desc: "Otp verification failed",
+      ).show();
+    } else if (registrationResult == 201) {
+      // Handle successful registration with an AwesomeDialog
+      // ignore: use_build_context_synchronously
+      AwesomeDialog(
+        context: context,
+        dialogType: DialogType.SUCCES,
+        animType: AnimType.TOPSLIDE,
+        showCloseIcon: true,
+        title: "Awesome!",
+        desc: "Otp verified",
+      ).show();
 
-                      // ignore: use_build_context_synchronously
-                    } else if (isgetotp == 201) {
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.SUCCES,
-                        animType: AnimType.TOPSLIDE,
-                        showCloseIcon: true,
-                        title: "Awesome!",
-                        desc: "Otp verified",
-                      ).show();
-
-                      await Future.delayed(const Duration(seconds: 3));
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScreenNgoLogin(),
-                          ),
-                          (route) => false);
-                      // ignore: use_build_context_synchronously
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Error'),
-                          content: const Text('Otp verification faild.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    // ignore: use_build_context_synchronously
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: kpink, foregroundColor: kwhite),
-                  child: Consumer<NgoProvider>(
-                    builder: (context, value, child) {
-                      return value.isotpLoading
-                          ? SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: kwhite,
-                              ),
-                            )
-                          : const Text("Register");
-                    },
-                  ),
-                ),
+      await Future.delayed(const Duration(seconds: 3));
+      // ignore: use_build_context_synchronously
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => ScreenNgoLogin()),
+        (route) => false,
+      );
+    } else {
+      // Handle other errors with a simple AlertDialog
+      // ignore: use_build_context_synchronously
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Error'),
+          content: const Text('Otp verification failed.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
+  },
+  style: ElevatedButton.styleFrom(
+    backgroundColor: kpink,
+    foregroundColor: kwhite,
+  ),
+  child: Consumer<NgoProvider>(
+    builder: (context, value, child) {
+      return value.isotpLoading
+          ? SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: kwhite,
+              ),
+            )
+          : const Text("Register");
+    },
+  ),
+),
                 kheight30,
                 kheight30,
                 const Text("Resend code in 10 second"),
                 kheight30,
                 Text(
                   "Didn't recevied code?",
-                  style: textStyleFuc(
+                  style:  textStyleFuc(
                       weight: FontWeight.w700, color: kpink, size: 14),
                 )
               ],

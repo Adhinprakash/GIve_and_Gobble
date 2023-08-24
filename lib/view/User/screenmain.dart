@@ -17,9 +17,7 @@ class ScreenMainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
       body: SafeArea(
-      
           child: ValueListenableBuilder(
         valueListenable: indexchangenotifier,
         builder: (context, index, _) {

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
 import 'package:give_gobble/controller/provider/ngo_forgot_password.dart';
@@ -6,12 +8,44 @@ import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
-class ScreenNgoOtp extends StatelessWidget {
+class ScreenNgoOtp extends StatefulWidget {
   const ScreenNgoOtp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<ScreenNgoOtp> createState() => _ScreenNgoOtpState();
+}
+
+class _ScreenNgoOtpState extends State<ScreenNgoOtp> {
     final _formKey = GlobalKey<FormState>();
+late Timer _timer;
+int _secondsRemaining=120;
+
+@override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+ void  startTimer(){
+  _timer=Timer.periodic(const Duration(seconds: 1), (timer) {
+    setState(() {
+      if(_secondsRemaining>0){
+        _secondsRemaining--;
+      }else{
+        _timer.cancel();
+      }
+    });
+   });
+
+   
+ }
+ @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return SafeArea(
       child: Scaffold(
@@ -52,7 +86,7 @@ class ScreenNgoOtp extends StatelessWidget {
                     ),
                     kheight30,
                     kheight30,
-                    const Text("Resend code in 10 second"),
+                     Text("Resend code in ${_secondsRemaining} second"),
                     kheight30,
                     kheight30,
                     Container(

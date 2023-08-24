@@ -10,7 +10,7 @@ class ScreenforgotPassword extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   final _formKey = GlobalKey<FormState>();
+    final _formKey = GlobalKey<FormState>();
 
     return SafeArea(
       child: Scaffold(
@@ -33,33 +33,34 @@ class ScreenforgotPassword extends StatelessWidget {
                 ),
                 kheight30,
                 kheight30,
-                  SizedBox(
-                      height: 8.h,
-                      width: 80.w,
-                      child: TextFormField(
-                        controller:Provider.of<Forgotpassword>(context,listen: false).emailcontroller,
-          
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your Email';
-                          }
-                          return null;
-                        },
-                        cursorColor: Colors.black,
-                        style: const TextStyle(),
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          labelText: 'Username or Email',
-                          fillColor: Colors.amber,
-                          labelStyle: const TextStyle(color: Colors.black),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(color: Colors.black),
-                          ),
-                        ),
+                SizedBox(
+                  height: 8.h,
+                  width: 80.w,
+                  child: TextFormField(
+                    controller:
+                        Provider.of<Forgotpassword>(context, listen: false)
+                            .emailcontroller,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter your Email';
+                      }
+                      return null;
+                    },
+                    cursorColor: Colors.black,
+                    style: const TextStyle(),
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      labelText: 'Username or Email',
+                      fillColor: Colors.amber,
+                      labelStyle: const TextStyle(color: Colors.black),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(color: Colors.black),
                       ),
                     ),
+                  ),
+                ),
                 kheight30,
                 kheight30,
                 Container(
@@ -68,57 +69,52 @@ class ScreenforgotPassword extends StatelessWidget {
                     width: 350,
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () async{
-                        if(_formKey.currentState!.validate()){
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          int isverify = await Provider.of<Forgotpassword>(
+                                  context,
+                                  listen: false)
+                              .enterOtp();
 
-                        int isverify  = await Provider.of<Forgotpassword>(context,listen: false).enterOtp();
-
-                          if(isverify==200){
-                                        // ignore: use_build_context_synchronously
-                                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ScreenOtp()),
-                        );
-                          }else if(isverify==401){
-
-                               // ignore: use_build_context_synchronously
-                               showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Error'),
-                                      content: const Text(
-                                          'Enter a valid otp'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                          }else{
-                                // ignore: use_build_context_synchronously
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Oops!'),
-                                      content: const Text(
-                                          'Internal server error'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('OK'),
-                                        ),
-                                      ],
-                                    ),
-                                  );
+                          if (isverify == 200) {
+                            // ignore: use_build_context_synchronously
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const ScreenOtp()),
+                            );
+                          } else if (isverify == 401) {
+                            // ignore: use_build_context_synchronously
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Error'),
+                                content: const Text('Enter a valid otp'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          } else {
+                            // ignore: use_build_context_synchronously
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Oops!'),
+                                content: const Text('Internal server error'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
                           }
-                     
                         }
-                     
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: kpink, foregroundColor: kwhite),
