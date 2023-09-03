@@ -34,11 +34,7 @@ class NewslistWidget extends StatelessWidget {
                    width: 380,
                       height: 230,
                 ):
-                Image.network(
-                  defaultUrl,
-                   width: 380,
-                      height: 230,
-                )
+               Center(child: Center(child: Image.asset("assets/27002.jpg",width: 200,height: 200,)))
                 ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,

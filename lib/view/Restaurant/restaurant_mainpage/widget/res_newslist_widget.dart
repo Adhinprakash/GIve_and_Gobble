@@ -26,12 +26,13 @@ class ResnewslistWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
+            image!=null
+            ?Center(
                 child: Image.network(
               image!,
               width: 380,
               height: 250,
-            )),
+            )): Center(child: Image.asset("assets/27002.jpg",width: 200,height: 200,)),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -53,6 +54,7 @@ class ResnewslistWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 30, right: 10),
                   child: Text(
                     desc!,
+                    maxLines: 3,
                     style: textStyleFuc(
                         weight: FontWeight.w500, color: kBlack, size: 15),
                   ),
