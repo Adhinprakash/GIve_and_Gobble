@@ -29,58 +29,7 @@ class ScreenProfileRes extends StatelessWidget {
                         style: textStyleFuc(
                             weight: FontWeight.w600, color: kwhite, size: 28),
                       ),
-                      IconButton(
-                        color: kwhite,
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                              title: const Text('Logout Confirmation'),
-                              content: const Text(
-                                  'Are you sure you want to logout?'),
-                              actions: [
-                                TextButton(
-                                  onPressed: () {
-                                    Navigator.pop(context); // Close the dialog
-                                  },
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () async {
-                                    // Access the UserLogin class using Provider and call the logout method.
-
-                                    bool logout = await Provider.of<ResLogin>(
-                                            context,
-                                            listen: false)
-                                        .restaurantlogout(context);
-                                    if (logout) {
-                                      // ignore: use_build_context_synchronously
-                                      Navigator.pushAndRemoveUntil(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const LandingPages(),
-                                        ),
-                                        (route) => false,
-                                      );
-                                      // ignore: use_build_context_synchronously
-                                      Provider.of<ResLogin>(context,
-                                              listen: false)
-                                          .emailOResnamecontroller
-                                          .clear();
-                                    }
-                                  },
-                                  child: const Text('Logout'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.logout,
-                        ),
-                        iconSize: 25,
-                      ),
+                   
                     ],
                   ),
                   kheight30,

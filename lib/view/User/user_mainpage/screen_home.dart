@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../controller/provider/user_login.dart';
+import '../../landingpages/landing_pages.dart';
+
 class ScreenHome extends StatefulWidget {
   const ScreenHome({super.key});
 
@@ -39,9 +42,64 @@ class _ScreenHomeState extends State<ScreenHome> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Give&Gobble",
-                  style: GoogleFonts.reenieBeanie(color: kpink, fontSize: 45),
+                Consumer<UserLogin>(
+                  builder:(context, value, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Give&Gobble",
+                          style: GoogleFonts.reenieBeanie(color: kpink, fontSize: 45),
+                        ),
+                           IconButton(
+                            color: kpurple,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Logout Confirmation'),
+                                  content: const Text(
+                                      'Are you sure you want to logout?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // Close the dialog
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        bool logoutsuccesss =
+                                            await Provider.of<UserLogin>(context,
+                                                    listen: false)
+                                                .logout(context);
+
+                                        if (logoutsuccesss) {
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LandingPages(),
+                                            ),
+                                            (route) => false,
+                                          );
+                                        }
+                                      },
+                                      child: const Text('Logout'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                            ),
+                            iconSize: 25,
+                          ),
+                      ],
+                    );
+                  }, 
                 ),
                 kheight30,
                 Center(

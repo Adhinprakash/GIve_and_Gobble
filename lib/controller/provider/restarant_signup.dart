@@ -90,18 +90,19 @@ class RestaurantProvider extends ChangeNotifier {
       log(response.statusCode.toString());
       log(response.body);
 
-      SharedPreferences pref = await SharedPreferences.getInstance();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
       if (response.statusCode == 201) {
-        pref.setString('restaurant', data['restaurant']['username']);
-        pref.setString('email', data['restaurant']['email']);
-        pref.setString('location', data['restaurant']['location']);
-        pref.setString('role', data['restaurant']['role']);
-        pref.setString('resprofile', data['restaurant']['profile']);
-        pref.setString('resRefresh', jsonDecode(response.body)['refreshToken']);
+        preferences.setString('restaurant', data['restaurant']['username']);
+        preferences.setString('email', data['restaurant']['email']);
+        preferences.setString('location', data['restaurant']['location']);
+        preferences.setString('role', data['restaurant']['role']);
+        preferences.setString('resprofile', data['restaurant']['profile']);
+        preferences.setString('resRefresh', jsonDecode(response.body)['refreshToken']);
 
-        pref.setString('resAccess', jsonDecode(response.body)['accessToken']);
+        preferences.setString('resAccess', jsonDecode(response.body)['accessToken']);
+
                 String resId = data['restaurant']['_id'];
-      pref.setString('resId', resId);
+      preferences.setString('resId', resId);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isResRegistered', true);
 

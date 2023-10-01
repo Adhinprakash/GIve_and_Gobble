@@ -107,82 +107,104 @@ class ScreenLogin extends StatelessWidget {
                             size: 13),
                       )),
                   kHeight15,
-                  SizedBox(
-                      width: 80.w,
-                      height: 5.h,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (_formKey.currentState!.validate()) {
-                                int loginsuccess = await Provider.of<UserLogin>(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        
+                          width: 50.w,
+                          height: 5.h,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  if (_formKey.currentState!.validate()) {
+                                    int loginsuccess = await Provider.of<UserLogin>(
+                                            context,
+                                            listen: false)
+                                        .userlogin(context);
+                                    if (loginsuccess == 201) {
+                                      // ignore: use_build_context_synchronously
+
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pushAndRemoveUntil(
                                         context,
-                                        listen: false)
-                                    .userlogin(context);
-                                if (loginsuccess == 201) {
-                                  // ignore: use_build_context_synchronously
-
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScreenMainPage(),
-                                    ),
-                                    (route) => false,
-                                  );
-
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
-                                    backgroundColor: kpink,
-                                    content: Text(
-                                      "Login successfull",
-                                      style: textStyleFuc(
-                                          weight: FontWeight.w500,
-                                          color: kwhite,
-                                          size: 16),
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ));
-                                } else {
-                                  // ignore: use_build_context_synchronously
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => AlertDialog(
-                                      title: const Text('Error'),
-                                      content: const Text(
-                                          'Login faild please try again.'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () =>
-                                              Navigator.pop(context),
-                                          child: const Text('OK'),
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenMainPage(),
                                         ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: kpink,
-                                foregroundColor: kwhite),
-                            child: Consumer<UserLogin>(
-                              builder: (context, value, _) {
-                                return value.isLoading
-                                    ? SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                            color: kwhite, strokeWidth: 2),
-                                      )
-                                    : const Text("Login");
-                              },
-                            ),
-                          ),
-                        ],
-                      )),
+                                        (route) => false,
+                                      );
+
+                                      // ignore: use_build_context_synchronously
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor: kpink,
+                                        content: Text(
+                                          "Login successfull",
+                                          style: textStyleFuc(
+                                              weight: FontWeight.w500,
+                                              color: kwhite,
+                                              size: 16),
+                                        ),
+                                        duration: const Duration(seconds: 2),
+                                      ));
+                                    } else {
+                                      // ignore: use_build_context_synchronously
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                          title: const Text('Error'),
+                                          content: const Text(
+                                              'Login faild please try again.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: kpink,
+                                    foregroundColor: kwhite),
+                                child: Consumer<UserLogin>(
+                                  builder: (context, value, _) {
+                                    return value.isLoading
+                                        ? SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                                color: kwhite, strokeWidth: 2),
+                                          )
+                                        : const Text("Login");
+                                  },
+                                ),
+                              ),
+                            ],
+                          )),
+                           ElevatedButton(onPressed: (){
+
+                             Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenMainPage(),
+                                        )
+                                      
+                                      );
+                           }, child:  Text("Guest mode"),style:ElevatedButton.styleFrom(
+                                    backgroundColor: kpink,
+                                    foregroundColor: kwhite),),
+                    ],
+                  ),
+
+
+
+                     
                   kHeight15,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

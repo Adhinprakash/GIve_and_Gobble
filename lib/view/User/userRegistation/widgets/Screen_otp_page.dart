@@ -53,123 +53,127 @@ _secondsRemaining--;
         body: Padding(
           padding: const EdgeInsets.only(left: 50),
           child: Form(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+            child: ListView(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Text(
-                    "Verify your Account ",
-                    style: textStyleFuc(
-                        weight: FontWeight.bold, color: kBlack, size: 30),
-                  ),
-                ),
-                kheight30,
-                kheight30,
-                Padding(
-                    padding: const EdgeInsets.only(top: 40),
-                    child: Consumer<UserProvider>(
-                      builder: (context, value, _) {
-                        return Text(
-                          "Your OTP send to your given email",
-                          style: textStyleFuc(
-                              weight: FontWeight.w500, color: kBlack, size: 15),
-                        );
-                      },
-                    )),
-                kheight30,
-                SizedBox(
-                  width: 70.w,
-                  child: Pinput(
-                    key: formKey,
-                    controller:
-                        Provider.of<UserProvider>(context, listen: false)
-                            .otpcontroller,
-                    length: 6,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  ),
-                ),
-                kheight30,
-                kHeight15,
-                ElevatedButton(
-                  onPressed: () async {
-                    String otp =
-                        Provider.of<UserProvider>(context, listen: false)
-                            .otpcontroller
-                            .text;
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30),
+                      child: Text(
+                        "Verify your Account ",
+                        style: textStyleFuc(
+                            weight: FontWeight.bold, color: kBlack, size: 30),
+                      ),
+                    ),
+                    kheight30,
+                    kheight30,
+                    Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Consumer<UserProvider>(
+                          builder: (context, value, _) {
+                            return Text(
+                              "Your OTP send to your given email",
+                              style: textStyleFuc(
+                                  weight: FontWeight.w500, color: kBlack, size: 15),
+                            );
+                          },
+                        )),
+                    kheight30,
+                    SizedBox(
+                      width: 70.w,
+                      child: Pinput(
+                        key: formKey,
+                        controller:
+                            Provider.of<UserProvider>(context, listen: false)
+                                .otpcontroller,
+                        length: 6,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      ),
+                    ),
+                    kheight30,
+                    kHeight15,
+                    ElevatedButton(
+                      onPressed: () async {
+                        String otp =
+                            Provider.of<UserProvider>(context, listen: false)
+                                .otpcontroller
+                                .text;
 
-                    bool isgetotp =
-                        await Provider.of<UserProvider>(context, listen: false)
-                            .registertwo(otp);
-                    // Provider.of<UserProvider>(context, listen: false)
-                    //     .otpcontroller
-                    //     .clear();
-                    if (isgetotp) {
-                      // ignore: use_build_context_synchronously
-                      AwesomeDialog(
-                        context: context,
-                        dialogType: DialogType.SUCCES,
-                        animType: AnimType.TOPSLIDE,
-                        showCloseIcon: true,
-                        title: "Awesome!",
-                        desc: "Registration successfull",
-                      ).show();
+                        bool isgetotp =
+                            await Provider.of<UserProvider>(context, listen: false)
+                                .registertwo(otp);
+                        // Provider.of<UserProvider>(context, listen: false)
+                        //     .otpcontroller
+                        //     .clear();
+                        if (isgetotp) {
+                          // ignore: use_build_context_synchronously
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.SUCCES,
+                            animType: AnimType.TOPSLIDE,
+                            showCloseIcon: true,
+                            title: "Awesome!",
+                            desc: "Registration successfull",
+                          ).show();
 
-                      await Future.delayed(const Duration(seconds: 3));
-                      // ignore: use_build_context_synchronously
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ScreenMainPage(),
-                          ),
-                          (route) => false);
-                    } else {
-                      // ignore: use_build_context_synchronously
-                      showDialog(
-                        context: context,
-                        builder: (context) => AlertDialog(
-                          title: const Text('Error'),
-                          content: const Text('Otp verification faild.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
-
-                    // ignore: use_build_context_synchronously
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: kpink, foregroundColor: kwhite),
-                  child: Consumer<UserProvider>(
-                    builder: (context, value, child) {
-                      return value.isotpLoading
-                          ? SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                color: kwhite,
+                          await Future.delayed(const Duration(seconds: 3));
+                          // ignore: use_build_context_synchronously
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ScreenMainPage(),
                               ),
-                            )
-                          : const Text("Register");
-                    },
-                  ),
-                ),
-                kheight30,
-                kheight30,
-                 Text("Resend code in ${_secondsRemaining} second"),
-                kheight30,
-                Text(
-                  "Didn't recevied code?",
-                  style: textStyleFuc(
-                      weight: FontWeight.w700, color: kpink, size: 14),
-                ),
-                                    Lottie.asset("assets/animation/animation_llbxct8x.json",height: 300,width: 300)
+                              (route) => false);
+                        } else {
+                          // ignore: use_build_context_synchronously
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text('Otp verification faild.'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(context),
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
 
+                        // ignore: use_build_context_synchronously
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: kpink, foregroundColor: kwhite),
+                      child: Consumer<UserProvider>(
+                        builder: (context, value, child) {
+                          return value.isotpLoading
+                              ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                    strokeWidth: 2,
+                                    color: kwhite,
+                                  ),
+                                )
+                              : const Text("Register");
+                        },
+                      ),
+                    ),
+                    kheight30,
+                    kheight30,
+                     Text("Resend code in ${_secondsRemaining} second"),
+                    kheight30,
+                    Text(
+                      "Didn't recevied code?",
+                      style: textStyleFuc(
+                          weight: FontWeight.w700, color: kpink, size: 14),
+                    ),
+                                        Lottie.asset("assets/animation/animation_llbxct8x.json",height: 300,width: 300)
+
+                  ],
+                ),
               ],
             ),
           ),

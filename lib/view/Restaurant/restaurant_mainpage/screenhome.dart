@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
 import 'package:give_gobble/controller/provider/news_request/news_request.dart';
 import 'package:give_gobble/controller/provider/restarant_signup.dart';
+import 'package:give_gobble/controller/provider/restaurant_login.dart';
 import 'package:give_gobble/view/Restaurant/restaurant_mainpage/widget/res_newslist_widget.dart';
 import 'package:give_gobble/view/Restaurant/widgets/restaurant_cardwidget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../landingpages/landing_pages.dart';
 
 class ScreenHomeRestaurant extends StatelessWidget {
   const ScreenHomeRestaurant({super.key});
@@ -26,9 +29,66 @@ class ScreenHomeRestaurant extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Give&Gobble",
-                  style: GoogleFonts.reenieBeanie(color: kpink, fontSize: 45),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Give&Gobble",
+                      style: GoogleFonts.reenieBeanie(color: kpink, fontSize: 45),
+                    ),
+                       IconButton(
+                        color: kpurple,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Logout Confirmation'),
+                              content: const Text(
+                                  'Are you sure you want to logout?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context); // Close the dialog
+                                  },
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    // Access the UserLogin class using Provider and call the logout method.
+
+                                    bool logout = await Provider.of<ResLogin>(
+                                            context,
+                                            listen: false)
+                                        .restaurantlogout(context);
+                                    if (logout) {
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              const LandingPages(),
+                                        ),
+                                        (route) => false,
+                                      );
+                                      // ignore: use_build_context_synchronously
+                                      Provider.of<ResLogin>(context,
+                                              listen: false)
+                                          .emailOResnamecontroller
+                                          .clear();
+                                    }
+                                  },
+                                  child: const Text('Logout'),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        icon: const Icon(
+                          Icons.logout,
+                        ),
+                        iconSize: 25,
+                      )
+                  ],
                 ),
                 kheight30,
                 Center(
@@ -147,7 +207,7 @@ class ScreenHomeRestaurant extends StatelessWidget {
                         height: 50.h,
                         width: 100.w,
                         child: ListView.builder(
-                          itemCount: 6,
+                          itemCount: 2,
                           itemBuilder: (context, index) {
                             return ResnewslistWidget(
                               title: article[index].title,

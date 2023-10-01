@@ -70,8 +70,12 @@ class ResLogin extends ChangeNotifier {
       prefs.remove('isResRegistered');
       prefs.remove('userId');
       prefs.remove('userRole');
-      prefs.remove('accessToken');
+      prefs.remove('resAccess');
       prefs.remove('refreshToken');
+   SharedPreferences preferences=await SharedPreferences.getInstance();
+   await preferences.remove("resAccess");
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+     await  sharedPreferences.remove("resAccess");
       _setIsLoading(false);
       notifyListeners();
       return true;
