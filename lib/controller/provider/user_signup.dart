@@ -93,19 +93,19 @@ class UserProvider extends ChangeNotifier {
       log(response.body);
     
       if (response.statusCode == 201) {
-        SharedPreferences sharedPreferences =
+        SharedPreferences preferences =
             await SharedPreferences.getInstance();
   String userId=data['user']['_id'];
-  sharedPreferences.setString("userId", userId);
-        sharedPreferences.setString('username', data['user']['username']);
-        sharedPreferences.setString('email', data['user']['email']);
-        sharedPreferences.setString('location', data['user']['location']);
-        sharedPreferences.setString('role', data['user']['role']);
-        sharedPreferences.setString('profile', data['user']['profile']);
+  preferences.setString("userId", userId);
+        preferences.setString('username', data['user']['username']);
+        preferences.setString('email', data['user']['email']);
+        preferences.setString('location', data['user']['location']);
+        preferences.setString('role', data['user']['role']);
+        preferences.setString('profile', data['user']['profile']);
 
-        sharedPreferences.setString(
+        preferences.setString(
             'userRefresh', jsonDecode(response.body)['refreshToken']);
-        sharedPreferences.setString(
+        preferences.setString(
             'userAccess', jsonDecode(response.body)['accessToken']);
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('isRegistered', true);
@@ -124,13 +124,13 @@ class UserProvider extends ChangeNotifier {
 
   Future<void> getUserDetailsFromSharedPreferences() async {
     try {
-      SharedPreferences sharedPreferences =
+      SharedPreferences preferences =
           await SharedPreferences.getInstance();
-      String username = sharedPreferences.getString('username') ?? '';
-      String email = sharedPreferences.getString('email') ?? '';
-      String location = sharedPreferences.getString('location') ?? '';
-      String role = sharedPreferences.getString('role') ?? '';
-      String image = sharedPreferences.getString('profile') ?? '';
+      String username = preferences.getString('username') ?? '';
+      String email = preferences.getString('email') ?? '';
+      String location = preferences.getString('location') ?? '';
+      String role = preferences.getString('role') ?? '';
+      String image = preferences.getString('profile') ?? '';
 
       userdetils = [
         {'key': 'username', 'value': username},

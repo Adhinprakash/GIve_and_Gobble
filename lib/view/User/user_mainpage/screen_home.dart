@@ -38,7 +38,7 @@ class _ScreenHomeState extends State<ScreenHome> {
           child: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding:  EdgeInsets.all(8.sp),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,7 +105,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                 Center(
                   child: Container(
                       width: 86.w,
-                      height: 20.h,
+                      height: 25.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: const Color.fromARGB(255, 122, 93, 170),
@@ -117,7 +117,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                                 offset: const Offset(0, 4))
                           ]),
                       child: Padding(
-                        padding: const EdgeInsets.all(14),
+                        padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
                         child: Row(
                           children: [
                             Column(
@@ -131,13 +131,20 @@ class _ScreenHomeState extends State<ScreenHome> {
                                       size: 21),
                                 ),
                                 kHeight15,
-                                ElevatedButton(
+                                ElevatedButton( 
                                     onPressed: () async {
                                       String url =
                                           'https://www.akshayapatra.org';
                                       await launchUrl(Uri.parse(url));
                                     },
-                                    child: const Text("Donation"))
+                                        child: const Text("Donation"),
+                                        style:ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 18.sp,
+                                               vertical: 11.sp
+                                          )
+                                        ) ,
+                                        )
                               ],
                             ),
                             Image.asset(
@@ -156,50 +163,54 @@ class _ScreenHomeState extends State<ScreenHome> {
                       weight: FontWeight.w600, color: kBlack, size: 20),
                 ),
                 kHeightFive,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://www.feedingindia.org/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: const CardWidget(
-                        text: "Food",
-                        image: "assets/food-removebg-preview.png",
+                Container(
+                  width: 100.w,
+                  child: Row(
+                    
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://www.feedingindia.org/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: const CardWidget(
+                          text: "Food",
+                          image: "assets/food-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://give.do/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: const CardWidget(
-                        text: "Education",
-                        image: "assets/Graduation_hat-removebg-preview.png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://give.do/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: const CardWidget(
+                          text: "Education",
+                          image: "assets/Graduation_hat-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://www.waterforpeople.org/india/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: const CardWidget(
-                        text: "Water",
-                        image: "assets/waterbottle-removebg-preview (1).png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://www.waterforpeople.org/india/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: const CardWidget(
+                          text: "Water",
+                          image: "assets/waterbottle-removebg-preview (1).png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://sadsindia.org/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: const CardWidget(
-                        text: "Clothes",
-                        image: "assets/clothes-removebg-preview.png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://sadsindia.org/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: const CardWidget(
+                          text: "Clothes",
+                          image: "assets/clothes-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 kheight30,
                 Text(
@@ -218,7 +229,7 @@ class _ScreenHomeState extends State<ScreenHome> {
                         height: 50.h,
                         width: 100.w,
                         child: ListView.builder(
-                          itemCount: 6,
+                          itemCount: 2,
                           itemBuilder: (context, index) {
                             return NewslistWidget(
                               title: article[index].title,

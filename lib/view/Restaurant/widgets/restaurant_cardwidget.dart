@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
+import 'package:sizer/sizer.dart';
 
 class RestuarantCardWidget extends StatelessWidget {
   RestuarantCardWidget({super.key, required this.text, required this.image});
@@ -8,8 +9,8 @@ class RestuarantCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 90,
-      height: 90,
+       width: 70.sp,
+      height: 70.sp,
       decoration: BoxDecoration(
           color: Colors.grey[300],
           borderRadius: BorderRadius.circular(10),

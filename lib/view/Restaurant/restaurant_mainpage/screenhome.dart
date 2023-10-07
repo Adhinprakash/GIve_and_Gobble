@@ -25,7 +25,7 @@ class ScreenHomeRestaurant extends StatelessWidget {
           child: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding:  EdgeInsets.all(8.sp),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -93,8 +93,8 @@ class ScreenHomeRestaurant extends StatelessWidget {
                 kheight30,
                 Center(
                   child: Container(
-                      width: 380,
-                      height: 200,
+                      width: 86.w,
+                      height: 25.h,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
                           color: const Color.fromARGB(255, 122, 93, 170),
@@ -106,7 +106,8 @@ class ScreenHomeRestaurant extends StatelessWidget {
                                 offset: const Offset(0, 4))
                           ]),
                       child: Padding(
-                        padding: const EdgeInsets.all(14),
+                                               padding: const EdgeInsets.only(left: 10,top: 10,bottom: 10),
+
                         child: Row(
                           children: [
                             Column(
@@ -126,13 +127,20 @@ class ScreenHomeRestaurant extends StatelessWidget {
                                           'https://www.akshayapatra.org';
                                       await launchUrl(Uri.parse(url));
                                     },
-                                    child: const Text("Donation"))
+                                    child: const Text("Donation"),
+                                     style:ElevatedButton.styleFrom(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 18.sp,
+                                               vertical: 11.sp
+                                          )
+                                        )
+                                    )
                               ],
                             ),
                             Image.asset(
                               "assets/cardimage-removebg-preview.png",
-                              width: 150,
-                              height: 160,
+                             width: 35.w,
+                              height: 16.h,
                             )
                           ],
                         ),
@@ -145,50 +153,53 @@ class ScreenHomeRestaurant extends StatelessWidget {
                       weight: FontWeight.w600, color: kBlack, size: 20),
                 ),
                 kHeightFive,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://www.feedingindia.org/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: RestuarantCardWidget(
-                        text: "Food",
-                        image: "assets/food-removebg-preview.png",
+                Container(
+                   width: 100.w,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://www.feedingindia.org/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: RestuarantCardWidget(
+                          text: "Food",
+                          image: "assets/food-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://give.do/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: RestuarantCardWidget(
-                        text: "Education",
-                        image: "assets/Graduation_hat-removebg-preview.png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://give.do/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: RestuarantCardWidget(
+                          text: "Education",
+                          image: "assets/Graduation_hat-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://www.waterforpeople.org/india/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: RestuarantCardWidget(
-                        text: "Water",
-                        image: "assets/waterbottle-removebg-preview (1).png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://www.waterforpeople.org/india/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: RestuarantCardWidget(
+                          text: "Water",
+                          image: "assets/waterbottle-removebg-preview (1).png",
+                        ),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        String url = 'https://sadsindia.org/';
-                        await launchUrl(Uri.parse(url));
-                      },
-                      child: RestuarantCardWidget(
-                        text: "Clothes",
-                        image: "assets/clothes-removebg-preview.png",
+                      GestureDetector(
+                        onTap: () async {
+                          String url = 'https://sadsindia.org/';
+                          await launchUrl(Uri.parse(url));
+                        },
+                        child: RestuarantCardWidget(
+                          text: "Clothes",
+                          image: "assets/clothes-removebg-preview.png",
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
                 kheight30,
                 Text(

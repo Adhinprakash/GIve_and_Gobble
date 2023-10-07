@@ -110,93 +110,117 @@ class ScreenNgoLogin extends StatelessWidget {
                             size: 13),
                       )),
                   kHeight15,
-                  SizedBox(
-                      width: 80.w,
-                      height: 5.h,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              // Validate the form before attempting to login
-                              if (_formKey.currentState!.validate()) {
-                                // If the form is valid, perform the login process
+                  Row(
+                    children: [
+                      SizedBox(
+                          width: 50.w,
+                          height: 5.h,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () async {
+                                  // Validate the form before attempting to login
+                                  if (_formKey.currentState!.validate()) {
+                                    // If the form is valid, perform the login process
 
-                                int loginsuccess = await Provider.of<NgoLogin>(
+                                    int loginsuccess = await Provider.of<NgoLogin>(
+                                            context,
+                                            listen: false)
+                                        .ngologin(context);
+
+                                    if (loginsuccess == 401) {
+                                      // Display a warning dialog if the login fails due to verification
+                                      // ignore: use_build_context_synchronously
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.WARNING,
+                                        animType: AnimType.TOPSLIDE,
+                                        showCloseIcon: true,
+                                        title: "Warning!",
+                                        desc:
+                                            "Your account is under verification, it will be activated within 24 hours.",
+                                      ).show();
+                                    } else if (loginsuccess == 403) {
+                                      // Display an error dialog if the login fails due to account rejection
+                                      // ignore: use_build_context_synchronously
+                                      AwesomeDialog(
+                                        context: context,
+                                        dialogType: DialogType.ERROR,
+                                        animType: AnimType.TOPSLIDE,
+                                        showCloseIcon: true,
+                                        title: "Rejected!",
+                                        desc:
+                                            "Your account has been rejected by the admin. Please remove the account and try again.",
+                                      ).show();
+                                    } else if (loginsuccess == 201) {
+                                        Provider.of<NgoLogin>(context, listen: false)
+                                      .emailOResnamecontroller
+                                      .clear();
+                                  // ignore: use_build_context_synchronously
+                                  Provider.of<NgoLogin>(context, listen: false)
+                                      .passwordcontroller
+                                      .clear();
+                                      // If the login is successful, navigate to the main page
+                                      // ignore: use_build_context_synchronously
+
+                                      // ignore: use_build_context_synchronously
+                                      Navigator.push(
                                         context,
-                                        listen: false)
-                                    .ngologin(context);
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenNgoMainpage(),
+                                        ),
+                                      );
 
-                                if (loginsuccess == 401) {
-                                  // Display a warning dialog if the login fails due to verification
-                                  // ignore: use_build_context_synchronously
-                                  AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.WARNING,
-                                    animType: AnimType.TOPSLIDE,
-                                    showCloseIcon: true,
-                                    title: "Warning!",
-                                    desc:
-                                        "Your account is under verification, it will be activated within 24 hours.",
-                                  ).show();
-                                } else if (loginsuccess == 403) {
-                                  // Display an error dialog if the login fails due to account rejection
-                                  // ignore: use_build_context_synchronously
-                                  AwesomeDialog(
-                                    context: context,
-                                    dialogType: DialogType.ERROR,
-                                    animType: AnimType.TOPSLIDE,
-                                    showCloseIcon: true,
-                                    title: "Rejected!",
-                                    desc:
-                                        "Your account has been rejected by the admin. Please remove the account and try again.",
-                                  ).show();
-                                } else if (loginsuccess == 201) {
-                                  // If the login is successful, navigate to the main page
-                                  // ignore: use_build_context_synchronously
-
-                                  // ignore: use_build_context_synchronously
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => ScreenNgoMainpage(),
-                                    ),
-                                  );
-
-                                  // ignore: use_build_context_synchronously
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(SnackBar(
+                                      // ignore: use_build_context_synchronously
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        backgroundColor: kpink,
+                                        content: Text(
+                                          "Login successfull",
+                                          style: textStyleFuc(
+                                              weight: FontWeight.w500,
+                                              color: kwhite,
+                                              size: 16),
+                                        ),
+                                        duration: const Duration(seconds: 2),
+                                      ));
+                                    }
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
                                     backgroundColor: kpink,
-                                    content: Text(
-                                      "Login successfull",
-                                      style: textStyleFuc(
-                                          weight: FontWeight.w500,
-                                          color: kwhite,
-                                          size: 16),
-                                    ),
-                                    duration: const Duration(seconds: 2),
-                                  ));
-                                }
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: kpink,
-                                foregroundColor: kwhite),
-                            child: Consumer<NgoLogin>(
-                              builder: (context, value, _) {
-                                return value.isLoading
-                                    ? SizedBox(
-                                        width: 24,
-                                        height: 24,
-                                        child: CircularProgressIndicator(
-                                            color: kwhite, strokeWidth: 2),
-                                      )
-                                    : const Text("Login");
-                              },
-                            ),
-                          )
-                        ],
-                      )),
+                                    foregroundColor: kwhite),
+                                child: Consumer<NgoLogin>(
+                                  builder: (context, value, _) {
+                                    return value.isLoading
+                                        ? SizedBox(
+                                            width: 24,
+                                            height: 24,
+                                            child: CircularProgressIndicator(
+                                                color: kwhite, strokeWidth: 2),
+                                          )
+                                        : const Text("Login");
+                                  },
+                                ),
+                              )
+                            ],
+                          )),
+
+                                       ElevatedButton(onPressed: (){
+
+                             Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenNgoMainpage(),
+                                        )
+                                      
+                                      );
+                           }, child:  Text("Guest mode"),style:ElevatedButton.styleFrom(
+                                    backgroundColor: kpink,
+                                    foregroundColor: kwhite),),
+                    ],
+                  ),
                   kHeight15,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

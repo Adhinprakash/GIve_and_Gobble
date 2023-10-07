@@ -6,6 +6,7 @@ import 'package:give_gobble/view/NGO/screencompleted/screen_completed.dart';
 import 'package:give_gobble/view/NGO/screenhome/widgets/card_widget.dart';
 import 'package:give_gobble/view/NGO/screenhome/widgets/foodrequest_list.dart';
 import 'package:give_gobble/view/NGO/screenpending/screen_pending.dart';
+import 'package:give_gobble/view/landingpages/landing_pages.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -63,10 +64,61 @@ class _ScreenHomeNgoState extends State<ScreenHomeNgo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Give&Gobble",
-                      style:
-                          GoogleFonts.reenieBeanie(color: kwhite, fontSize: 45),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Give&Gobble",
+                          style:
+                              GoogleFonts.reenieBeanie(color: kwhite, fontSize: 45),
+                        ),
+                        IconButton(
+                            color: kwhite,
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                  title: const Text('Logout Confirmation'),
+                                  content: const Text(
+                                      'Are you sure you want to logout?'),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context); // Close the dialog
+                                      },
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () async {
+                                        bool logoutsuccesss =
+                                            await Provider.of<NgoLogin>(context,
+                                                    listen: false)
+                                                .ngologout(context);
+
+                                        if (logoutsuccesss) {
+                                          // ignore: use_build_context_synchronously
+                                          Navigator.pushAndRemoveUntil(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const LandingPages(),
+                                            ),
+                                            (route) => false,
+                                          );
+                                        }
+                                      },
+                                      child: const Text('Logout'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                            icon: const Icon(
+                              Icons.logout,
+                            ),
+                            iconSize: 25,
+                          ),
+                      ],
                     ),
                     kheight30,
                     kheight30,
