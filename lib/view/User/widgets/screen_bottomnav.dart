@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
-
+import 'package:give_gobble/view/login/screen_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 ValueNotifier<int> indexchangenotifier = ValueNotifier(0);
 
 class BottomNavigationWidget extends StatelessWidget {
@@ -14,8 +15,18 @@ class BottomNavigationWidget extends StatelessWidget {
         return BottomNavigationBar(
             currentIndex: newindex,
             elevation: 0,
-            onTap: (newindex) {
-              indexchangenotifier.value = newindex;
+            onTap: (newindex)async {
+
+               SharedPreferences sharedPreferences =
+            await SharedPreferences.getInstance();
+        String? myValue = sharedPreferences.getString('userAccess');
+        if(myValue==null){
+        showLoginRequiredDialog(context);
+        }
+        else{
+  indexchangenotifier.value = newindex;
+        }
+            
             },
             type: BottomNavigationBarType.fixed,
             selectedItemColor: kpink,
@@ -39,4 +50,39 @@ class BottomNavigationWidget extends StatelessWidget {
       },
     );
   }
+  void showLoginRequiredDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Login Required'),
+        content: const Text('Please log in to continue.'),
+        actions: <Widget>[
+          Row(
+            children: [
+               TextButton(
+                child: Text('Login'),
+                onPressed: () {
+                 Navigator.pushAndRemoveUntil(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenLogin(),
+                                        ),
+                                        (route) => false,
+                                      ); // Close the dialog
+                },
+              ),
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the dialog
+                },
+              ),
+            ],
+          ),
+        ],
+      );
+    },
+  );
+}
 }
