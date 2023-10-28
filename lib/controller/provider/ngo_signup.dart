@@ -4,7 +4,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:shared_preferences/shared_preferences.dart';
 class NgoProvider extends ChangeNotifier {
   final ngonamecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
@@ -55,6 +55,7 @@ class NgoProvider extends ChangeNotifier {
       final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
       log(response.body);
+    
       // String errorMessage = data["message"] ?? "Unknown error occurred";
       if (response.statusCode == 200) {
         notifyListeners();
@@ -93,6 +94,8 @@ class NgoProvider extends ChangeNotifier {
       log(response.body);
 
       if (response.statusCode == 201) {
+          SharedPreferences ngopreference=  await SharedPreferences.getInstance();
+      ngopreference.setString("ngoAccess", jsonDecode(response.body)["accesstoken"]);
         notifyListeners();
         return 201;
       } else {

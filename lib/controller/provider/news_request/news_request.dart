@@ -5,7 +5,7 @@ import 'package:give_gobble/controller/api/api_url.dart';
 import 'package:give_gobble/model/news_model/article/article.dart';
 import 'package:http/http.dart' as http;
 
-class NewsApi extends ChangeNotifier {
+class   NewsApi extends ChangeNotifier {
   bool isLoading = true;
   List<Article> articles = [];
   Future<List<Article>> getnews() async {

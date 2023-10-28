@@ -1,5 +1,5 @@
 class Api {
-  static const baseUrl = "https://give-and-gobble.onrender.com";
+  static const baseUrl = "https://giveandgobble.online";
   static const signupstepone = '$baseUrl/register/stepone';
   static const signupsteptwo = '$baseUrl/register/steptwo/';
   static const loginApi = '$baseUrl/login';

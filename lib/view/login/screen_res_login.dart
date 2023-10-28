@@ -108,85 +108,103 @@ class ScreenRestaurantLogin extends StatelessWidget {
                             size: 13),
                       )),
                   kHeight15,
-                  SizedBox(
-                      width: 80.w,
-                      height: 5.h,
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            bool isloginsuccess = await Provider.of<ResLogin>(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                          width: 25.w,
+                          height: 5.h,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                bool isloginsuccess = await Provider.of<ResLogin>(
+                                        context,
+                                        listen: false)
+                                    .restaurantlogin(context);
+                                if (isloginsuccess) {
+                                  // ignore: use_build_context_synchronously
+                                  Navigator.pushAndRemoveUntil(
                                     context,
-                                    listen: false)
-                                .restaurantlogin(context);
-                            if (isloginsuccess) {
-                              // ignore: use_build_context_synchronously
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ScreenResMainPage(),
-                                ),
-                                (route) => false,
-                              );
-
-                              // ignore: use_build_context_synchronously
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(SnackBar(
-                                backgroundColor: kpink,
-                                content: Text(
-                                  "Login successfull",
-                                  style: textStyleFuc(
-                                      weight: FontWeight.w500,
-                                      color: kwhite,
-                                      size: 16),
-                                ),
-                                duration: const Duration(seconds: 2),
-                              ));
-
-                              // ignore: use_build_context_synchronously
-                              Provider.of<ResLogin>(context, listen: false)
-                                  .emailOResnamecontroller
-                                  .clear();
-                              // ignore: use_build_context_synchronously
-                              Provider.of<ResLogin>(context, listen: false)
-                                  .passwordcontroller
-                                  .clear();
-                            } else {
-                              // ignore: use_build_context_synchronously
-                              showDialog(
-                                context: context,
-                                builder: (context) => AlertDialog(
-                                  title: const Text('Error'),
-                                  content: const Text(
-                                      'An error occurred. Please try again later.'),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('OK'),
+                                    MaterialPageRoute(
+                                      builder: (context) => ScreenResMainPage(),
                                     ),
-                                  ],
-                                ),
-                              );
-                            }
-                          }
-                          // Provider.of<ResLogin>(context,listen: false).restaurantlogin(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: kpink, foregroundColor: kwhite),
-                        child: Consumer<ResLogin>(
-                          builder: (context, value, _) {
-                            return value.isLoading
-                                ? SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      color: kwhite,
+                                    (route) => false,
+                                  );
+
+                                  // ignore: use_build_context_synchronously
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(SnackBar(
+                                    backgroundColor: kpink,
+                                    content: Text(
+                                      "Login successfull",
+                                      style: textStyleFuc(
+                                          weight: FontWeight.w500,
+                                          color: kwhite,
+                                          size: 16),
                                     ),
-                                  )
-                                : const Text("Login");
-                          },
-                        ),
-                      )),
+                                    duration: const Duration(seconds: 2),
+                                  ));
+
+                                  // ignore: use_build_context_synchronously
+                                  Provider.of<ResLogin>(context, listen: false)
+                                      .emailOResnamecontroller
+                                      .clear();
+                                  // ignore: use_build_context_synchronously
+                                  Provider.of<ResLogin>(context, listen: false)
+                                      .passwordcontroller
+                                      .clear();
+                                } else {
+                                  // ignore: use_build_context_synchronously
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) => AlertDialog(
+                                      title: const Text('Error'),
+                                      content: const Text(
+                                          'An error occurred. Please try again later.'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () => Navigator.pop(context),
+                                          child: const Text('OK'),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                }
+                              }
+                              // Provider.of<ResLogin>(context,listen: false).restaurantlogin(context);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: kpink, foregroundColor: kwhite),
+                            child: Consumer<ResLogin>(
+                              builder: (context, value, _) {
+                                return value.isLoading
+                                    ? SizedBox(
+                                        width: 24,
+                                        height: 24,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: kwhite,
+                                        ),
+                                      )
+                                    : const Text("Login");
+                              },
+                            ),
+                          )),
+
+                                   ElevatedButton(onPressed: (){
+
+                             Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => ScreenResMainPage(),
+                                        )
+                                      
+                                      );
+                           }, child:  Text("Guest mode"),style:ElevatedButton.styleFrom(
+                                    backgroundColor: kpink,
+                                    foregroundColor: kwhite),)
+                    ],
+                  ),
                   kHeight15,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

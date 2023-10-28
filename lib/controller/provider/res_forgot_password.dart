@@ -9,13 +9,25 @@ class ResForgotpassword extends ChangeNotifier {
   final emailorusername = TextEditingController();
   final newpasswordcontroller = TextEditingController();
   String uId = '';
+ bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  void _setIsLoading(bool value) {
+    _isLoading = value;
+    notifyListeners();
+  }
+
+
   Future<int> enterOtp() async {
     final String email = resemailcontroller.text;
     try {
+      _setIsLoading(true);
       final response = await http
           .post(Uri.parse(Api.resforogt), body: {'identifier': email});
       final Map<String, dynamic> data = json.decode(response.body);
       uId = data["uId"];
+      _setIsLoading(false);
       if (response.statusCode == 200) {
         notifyListeners();
         return 200;
@@ -31,7 +43,7 @@ class ResForgotpassword extends ChangeNotifier {
 
   Future<int> confirmOtp() async {
     final String otp = otpcontroller.text;
-
+_setIsLoading(true);
     try {
       final response = await http
           .post(Uri.parse(Api.resenterotp + uId), body: {"enteredOtp": otp});

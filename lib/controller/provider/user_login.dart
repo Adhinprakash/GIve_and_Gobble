@@ -46,6 +46,7 @@ class UserLogin extends ChangeNotifier {
 
         sharedPreferences.setString(
             'userAccess', jsonDecode(response.body)['accessToken']);
+            
              String userId = responseData['user']['_id'];
       sharedPreferences.setString('userId', userId);
         emailOrusernamecontroller.clear();
@@ -70,12 +71,19 @@ class UserLogin extends ChangeNotifier {
     try {
       _setIsLoading(true);
       SharedPreferences prefs = await SharedPreferences.getInstance();
+      
       prefs.remove('isRegistered');
       prefs.remove('isLoggedIn');
       prefs.remove('userId');
       prefs.remove('userRole');
-      prefs.remove('accessToken');
       prefs.remove('refreshToken');
+
+         SharedPreferences preferences = await SharedPreferences.getInstance();
+         
+         await preferences.remove("userAccess");
+         String? access=preferences.getString("userAccess");
+                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+            await sharedPreferences.remove("userAccess");
 
       _setIsLoading(false);
       notifyListeners();

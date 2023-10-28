@@ -83,11 +83,14 @@ class NgoLogin extends ChangeNotifier {
       prefs.remove('isNgoLoggedIn');
       prefs.remove('userId');
       prefs.remove('userRole');
-      prefs.remove('accessToken');
       prefs.remove('refreshToken');
       prefs.remove('role');
       prefs.remove('profile');
-      
+      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      await sharedPreferences.remove("ngoAccess");
+        SharedPreferences ngopreference=await SharedPreferences.getInstance();
+        await ngopreference.remove("ngoAccess");
+
       _setIsLoading(false);
       notifyListeners();
       return true;

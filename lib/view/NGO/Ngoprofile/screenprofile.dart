@@ -36,25 +36,25 @@ class ScreenNgoProfile extends StatelessWidget {
                                   (item) => item['key'] == 'profile',
                                   orElse: () => {'value': 'N/A'})['value'],
                             )),
-                        Positioned(
-                            bottom: 9,
-                            right: 30,
-                            child: CircleAvatar(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ScreenEditNgoProfile()),
-                                  );
-                                },
-                                child: const SizedBox(
-                                    height: 40,
-                                    width: 40,
-                                    child: Icon(Icons.edit)),
-                              ),
-                            ))
+                        // Positioned(
+                        //     bottom: 9,
+                        //     right: 30,
+                        //     child: CircleAvatar(
+                        //       child: GestureDetector(
+                        //         onTap: () {
+                        //           Navigator.push(
+                        //             context,
+                        //             MaterialPageRoute(
+                        //                 builder: (context) =>
+                        //                     const ScreenEditNgoProfile()),
+                        //           );
+                        //         },
+                        //         child: const SizedBox(
+                        //             height: 40,
+                        //             width: 40,
+                        //             child: Icon(Icons.edit)),
+                        //       ),
+                        //     ))
                       ],
                     )),
                 Text(ngodetailsnotifier.ngodetails.firstWhere(

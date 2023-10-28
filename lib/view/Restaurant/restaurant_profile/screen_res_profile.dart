@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:give_gobble/controller/consts/const.dart';
 import 'package:give_gobble/controller/provider/restarant_signup.dart';
-import 'package:give_gobble/controller/provider/restaurant_login.dart';
 import 'package:give_gobble/view/Restaurant/restaurant_profile/screen_editprofile.dart';
 import 'package:give_gobble/view/Restaurant/restaurant_profile/widgets/post_detailswidget.dart';
-import 'package:give_gobble/view/landingpages/landing_pages.dart';
 import 'package:provider/provider.dart';
 
 class ScreenProfileRes extends StatelessWidget {
@@ -53,31 +51,26 @@ class ScreenProfileRes extends StatelessWidget {
                             SizedBox(
                                 width: 160,
                                 height: 160,
-                                child: Image.network(
-                                  resdetails.restaurantdetails.firstWhere(
-                                      (item) =>
-                                          item['key'] ==
-                                          'resprofile')['value']!,
-                                )),
-                            Positioned(
-                                bottom: 0,
-                                right: 20,
-                                child: CircleAvatar(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ScreenEditprofileRestaurant()),
-                                      );
-                                    },
-                                    child: const SizedBox(
-                                        height: 40,
-                                        width: 40,
-                                        child: Icon(Icons.edit)),
-                                  ),
-                                ))
+                                child:  Image.asset("assets/reastaurant final.png")),
+                            // Positioned(
+                            //     bottom: 0,
+                            //     right: 20,
+                            //     child: CircleAvatar(
+                            //       child: GestureDetector(
+                            //         onTap: () {
+                            //           Navigator.push(
+                            //             context,
+                            //             MaterialPageRoute(
+                            //                 builder: (context) =>
+                            //                     const ScreenEditprofileRestaurant()),
+                            //           );
+                            //         },
+                            //         child: const SizedBox(
+                            //             height: 40,
+                            //             width: 40,
+                            //             child: Icon(Icons.edit)),
+                            //       ),
+                            //     ))
                           ],
                         ),
                         Text(
